@@ -10,6 +10,7 @@ public class TileImpl implements Tile {
     //define the internal variables
     public String type;
     public Player owner;
+    public Unit unit;
 
     public boolean cityStatus = false;
 
@@ -47,6 +48,10 @@ public class TileImpl implements Tile {
     public void changeCityStatus(boolean status)
     {
         cityStatus = status;
+    }
+    
+    public Unit getUnit() {
+        return unit;
     }
 
 
