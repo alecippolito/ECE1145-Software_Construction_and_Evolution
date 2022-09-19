@@ -36,6 +36,11 @@ import static hotciv.framework.Player.*;
 
 public class GameImpl implements Game {
   private Player currentPlayerInTurn = Player.RED;
+
+  int numPlayers = 2;
+  Player currentPlayer = null;
+  int worldAge = -4000;
+  int turnNumber = 0;
  
   public Tile getTileAt( Position p ) {
     return getTile(p);
@@ -44,9 +49,46 @@ public class GameImpl implements Game {
     return getTileAt(p).getUnit();
   }
   public City getCityAt( Position p ) { return null; }
-  public Player getPlayerInTurn() { return null; }
-  public Player getWinner() { return null; }
-  public int getAge() { return 0; }
+  public Player getPlayerInTurn() {
+    if( currentPlayer == null){
+      currentPlayer = Player.BLUE;
+      return Player.RED;
+    }
+    if(currentPlayer == Player.RED) {
+      currentPlayer = Player.BLUE;
+      return Player.RED;
+    }if(currentPlayer == Player.BLUE) {
+      currentPlayer = Player.RED;
+      return Player.BLUE;
+      // return Player.BLUE; -- remove comment after more players can play
+    }
+    /**
+     if(currentPlayer == Player.YELLOW) {
+     currentPlayer = Player.YELLOW;
+     return Player.YELLOW;
+     }if(currentPlayer == Player.GREEN) {
+     currentPlayer = Player.RED;
+     return Player.GREEN;
+     }
+     **/
+    return null;
+  }
+  public Player getWinner() {
+    Player winner= Player.RED;
+    // TODO: implement algorithm to determine winner
+    if (getAge() == -3000){
+      return winner;
+    }
+    return null; }
+  public int getAge() {  /** return the age of the world. Negative numbers represent a world
+   * age BC (-4000 equals 4000 BC) while positive numbers are AD.
+   *  @return world age.
+   */
+    // increment 100 after every year
+    if(endOfRound() == true){
+      worldAge = worldAge + 100;
+    }
+    return worldAge;}
   public boolean moveUnit( Position from, Position to ) {
     Unit fUnit = getUnitAt(from);
     Unit tUnit = getUnitAt(to);
@@ -60,7 +102,15 @@ public class GameImpl implements Game {
     else
       return true;
   }
-  public void endOfTurn() {}
+  public void endOfTurn() {
+    turnNumber++;
+  }
+  public boolean endOfRound(){
+    // this will only work if only 2 people are playing
+    if(turnNumber % 2 != 0 || turnNumber == 0){
+      return false;
+    } return true;
+  }
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
   public void performUnitActionAt( Position p ) {}

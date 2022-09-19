@@ -105,7 +105,12 @@ public interface Game {
    * E) increment the world age.
    */
   public void endOfTurn();
-  
+
+  /**
+   * Tell the game that the end of the round has been reached.
+   */
+  public boolean endOfRound();
+
   /** change the work force's focus in a city, i.e. what
    * kind of production there will be emphasis on in the city.
    * Precondition: there is a city at location 'p'.
@@ -156,7 +161,8 @@ public interface Game {
    * @param p Input location
    * @param u Unit Player
    */
-  public void setUnitOwner(Position p, Player u);
+  // public void setUnitOwner(Position p, Player u);
+  // -- what is this? Giving errors and not implemented in GameImpl, Tests pass without this function
 
   /**
    * Return the tile at the given location
