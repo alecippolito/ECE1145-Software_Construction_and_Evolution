@@ -60,4 +60,6 @@ public interface Tile {
   public boolean hasCity();
 
   public void changeCityStatus(boolean status);
+    
+  public Unit getUnit();
 }
