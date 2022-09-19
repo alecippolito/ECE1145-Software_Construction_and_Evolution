@@ -150,6 +150,13 @@ public interface Game {
    * @param s New Tile Type
    */
   public void setTileType(Position p, String s);
+   
+   /**
+   * Set the Unit at the input position to the input owner
+   * @param p Input location
+   * @param u Unit Player
+   */
+  public void setUnitOwner(Position p, Player u);
 
   /**
    * Return the tile at the given location
