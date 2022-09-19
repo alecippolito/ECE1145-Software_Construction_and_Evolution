@@ -35,8 +35,13 @@ import static hotciv.framework.Player.*;
 */
 
 public class GameImpl implements Game {
-  public Tile getTileAt( Position p ) { return null; }
-  public Unit getUnitAt( Position p ) { return null; }
+  
+  public Tile getTileAt( Position p ) {
+    return getTile(p);
+  }
+  public Unit getUnitAt( Position p ) {
+    return getTileAt(p).getUnit();
+  }
   public City getCityAt( Position p ) { return null; }
   public Player getPlayerInTurn() { return null; }
   public Player getWinner() { return null; }
