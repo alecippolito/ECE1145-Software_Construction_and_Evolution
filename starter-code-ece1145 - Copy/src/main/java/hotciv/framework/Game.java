@@ -138,12 +138,6 @@ public interface Game {
 
 
   /**
-   * Constructor: this is where the initial data about the world will be stored
-   * Iteration 1: the World (16x16 grid of Tiles) will be initialized here
-   */
-  public void initialize();
-
-  /**
    * Mutator function: return the Tile data of the whole game
    * @return Tile[][] - 16x16 grid of tiles
    */
@@ -162,4 +156,15 @@ public interface Game {
    * @param p Input location
    */
   public Tile getTile(Position p);
+
+  /**
+   * Set the Owner of the tile manually from the game class
+   */
+  public void setOwnerFromGame(Position pos, Player pl);
+
+
+  /**
+   * Change whether or not there is a city manually from the game class
+   */
+  public void setCityStatusFromGame(Position pos, boolean status);
 }

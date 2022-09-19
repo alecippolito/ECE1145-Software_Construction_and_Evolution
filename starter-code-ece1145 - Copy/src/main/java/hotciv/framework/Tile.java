@@ -46,7 +46,18 @@ public interface Tile {
   public void setTileType(String s);
 
   /**
-   * constructor for this interface
+   * Set the owner of a tile
+   * @param p : player enum (Blue, Red, Yellow, Green)
    */
-  public void Tile();
+  public void setOwner(Player p);
+
+  /**
+   * return the owner of a tile
+   * @return the owner color
+   */
+  public Player getOwner();
+
+  public boolean hasCity();
+
+  public void changeCityStatus(boolean status);
 }

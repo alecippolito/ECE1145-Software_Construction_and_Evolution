@@ -5,6 +5,7 @@ import hotciv.framework.*;
 import java.util.Arrays;
 
 import static hotciv.framework.GameConstants.*;
+import static hotciv.framework.Player.*;
 
 /** Skeleton implementation of HotCiv.
  
@@ -50,11 +51,11 @@ public class GameImpl implements Game {
 
 
   //define the World constraints HERE, not the interface file
-  private Tile[][] World;
+  private Tile[][] World = new Tile[WORLDSIZE][WORLDSIZE];
 
-  public void initialize()
+
+  GameImpl()
   {
-    /*
     //Define the size of the World
     //World = new Tile[WORLDSIZE][WORLDSIZE];
 
@@ -62,32 +63,11 @@ public class GameImpl implements Game {
     //for now: initialize to PLAINS
     Tile initialTile = new TileImpl();
     initialTile.setTileType(PLAINS);
-
+    //System.out.print(initialTile.getOwner() + " ");
+    //System.out.print(initialTile.hasCity() + "\n");
     //loop through the World and initialize the tiles
-    for (int i = 0; i < WORLDSIZE; i++){
-      for (int j = 0; j < WORLDSIZE; j++){
-        World[i][j] = initialTile;
-      }
-    }
-    */
-
-
-    //set tile
-  }
-
-  GameImpl()
-  {
-    //Define the size of the World
-    World = new Tile[WORLDSIZE][WORLDSIZE];
-
-    //give Tiles to every position in the world
-    //for now: initialize to PLAINS
-    Tile initialTile = new TileImpl();
-    initialTile.setTileType(PLAINS);
-
-    //loop through the World and initialize the tiles
-    for (int i = 0; i < WORLDSIZE; i++){
-      for (int j = 0; j < WORLDSIZE; j++){
+    for (int i = 0; i < WORLDSIZE; i++) {
+      for (int j = 0; j < WORLDSIZE; j++) {
         World[i][j] = initialTile;
       }
     }
@@ -105,5 +85,13 @@ public class GameImpl implements Game {
 
   public Tile getTile(Position p){
     return World[p.getRow()][p.getColumn()];
+  }
+
+  public void setOwnerFromGame(Position pos, Player pl){
+    World[pos.getRow()][pos.getColumn()].setOwner(pl);
+  }
+
+  public void setCityStatusFromGame(Position pos, boolean status){
+    World[pos.getRow()][pos.getColumn()].changeCityStatus(status);
   }
 }

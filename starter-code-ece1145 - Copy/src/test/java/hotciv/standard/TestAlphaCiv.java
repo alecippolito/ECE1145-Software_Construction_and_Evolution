@@ -7,6 +7,7 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import static hotciv.framework.GameConstants.*;
+import static hotciv.framework.Player.*;
 import java.util.*;
 
 
@@ -98,12 +99,27 @@ public class TestAlphaCiv {
     Position p1 = new Position(2,2);
     game.setTileType(p1,MOUNTAINS);
     assertThat(game.getTile(p1).getTypeString(), is(MOUNTAINS));
-
-    int g = 5;
   }
 
   @Test
-  public void testRedOwnCityAtRow1Column2() {
-    //test code
+  public void testRedOwnCityAtRow1Column1() {
+
+    //tiles and ownership should be initialized in this iteration's constructor for the game class
+    Position p1 = new Position(1,1);
+    game.setCityStatusFromGame(p1,true);
+    game.setOwnerFromGame(p1,RED);
+    assertThat(game.getTile(p1).hasCity(), is(true));
+    assertThat(game.getTile(p1).getOwner(), is(Player.RED));
+  }
+
+  @Test
+  public void testBlueOwnCityAtRow4Column1() {
+
+    //tiles and ownership should be initialized in this iteration's constructor for the game class
+    Position p1 = new Position(4,1);
+    game.setOwnerFromGame(p1,BLUE);
+    game.setCityStatusFromGame(p1,true);
+    assertThat(game.getTile(p1).hasCity(), is(true));
+    assertThat(game.getTile(p1).getOwner(), is(Player.BLUE));
   }
 }
