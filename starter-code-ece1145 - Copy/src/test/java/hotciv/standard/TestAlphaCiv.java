@@ -100,6 +100,21 @@ public class TestAlphaCiv {
     game.setTileType(p1,MOUNTAINS);
     assertThat(game.getTile(p1).getTypeString(), is(MOUNTAINS));
   }
+    
+  @Test
+  public void playerShouldNotMoveOverMountain() {
+    Position p1 = new Position(3,2);
+    Position p2 = new Position(2,2);
+    game.setTileType(p2,MOUNTAINS);
+    assertThat(game.moveUnit(p1, p2), is(false));
+  }
+    
+  @Test
+  public void playerShouldNotMoveOverOcean() {
+    Position p1 = new Position(2,0);
+    Position p2 = new Position(1,0);
+    game.setTileType(p2,OCEANS);
+    assertThat(game.moveUnit(p1, p2), is(false));
 
   @Test
   public void testRedOwnCityAtRow1Column1() {
