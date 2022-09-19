@@ -35,7 +35,8 @@ import static hotciv.framework.Player.*;
 */
 
 public class GameImpl implements Game {
-  
+  private Player currentPlayerInTurn = Player.RED;
+ 
   public Tile getTileAt( Position p ) {
     return getTile(p);
   }
@@ -47,7 +48,17 @@ public class GameImpl implements Game {
   public Player getWinner() { return null; }
   public int getAge() { return 0; }
   public boolean moveUnit( Position from, Position to ) {
-    return false;
+    Unit fUnit = getUnitAt(from);
+    Unit tUnit = getUnitAt(to);
+    Tile m = getTileAt(to);
+    //Check if unit can move to position and is not blocked by mountains or oceans
+    if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
+      return false;
+    //Check units if valid to control or move into
+    else if (!fUnit.getOwner().equals(currentPlayerInTurn) || (tUnit.getOwner().equals(currentPlayerInTurn) && fUnit.getOwner().equals(currentPlayerInTurn)))
+      return false;
+    else
+      return true;
   }
   public void endOfTurn() {}
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
