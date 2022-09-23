@@ -102,12 +102,13 @@ public class TestAlphaCiv {
     Position p1 = new Position(0,1);
     assertThat(game.getTile(p1).getTypeString(), is(HILLS));
   }
+
     
   @Test
   public void playerShouldNotMoveOverMountain() {
     Position p1 = new Position(3,2);
     Position p2 = new Position(2,2);
-    game.setTileType(p2,MOUNTAINS);
+    game.setTileTypeFromGame(p2,MOUNTAINS);
     assertThat(game.moveUnit(p1, p2), is(false));
   }
     
@@ -115,7 +116,7 @@ public class TestAlphaCiv {
   public void playerShouldNotMoveOverOcean() {
     Position p1 = new Position(2, 0);
     Position p2 = new Position(1, 0);
-    game.setTileType(p2, OCEANS);
+    game.setTileTypeFromGame(p2, OCEANS);
     assertThat(game.moveUnit(p1, p2), is(false));
   }
 
@@ -124,8 +125,8 @@ public class TestAlphaCiv {
 
     //tiles and ownership should be initialized in this iteration's constructor for the game class
     Position p1 = new Position(1,1);
-    game.setCityStatusFromGame(p1,true);
-    game.setOwnerFromGame(p1,RED);
+    //game.setCityStatusFromGame(p1,true);
+    //game.setOwnerFromGame(p1,RED);
     assertThat(game.getTile(p1).hasCity(), is(true));
     assertThat(game.getTile(p1).getOwner(), is(Player.RED));
   }
@@ -135,8 +136,6 @@ public class TestAlphaCiv {
 
     //tiles and ownership should be initialized in this iteration's constructor for the game class
     Position p1 = new Position(4,1);
-    game.setOwnerFromGame(p1,BLUE);
-    game.setCityStatusFromGame(p1,true);
     assertThat(game.getTile(p1).hasCity(), is(true));
     assertThat(game.getTile(p1).getOwner(), is(Player.BLUE));
   }

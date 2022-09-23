@@ -154,7 +154,7 @@ public interface Game {
    * @param p Input location
    * @param s New Tile Type
    */
-  public void setTileType(Position p, String s);
+  public void setTileTypeFromGame(Position p, String s);
    
    /**
    * Set the Unit at the input position to the input owner

@@ -117,7 +117,6 @@ public class GameImpl implements Game {
 
 
   //define the World constraints HERE, not the interface file
-  //private Tile[][] World = new Tile[WORLDSIZE][WORLDSIZE];
   private Tile[][] World;
 
 
@@ -128,36 +127,39 @@ public class GameImpl implements Game {
 
     //give Tiles to every position in the world
     //for now: initialize to PLAINS
-    Tile initialTile = new TileImpl();
-    initialTile.setTileType(PLAINS);
-    //System.out.print(initialTile.getOwner() + " ");
-    //System.out.print(initialTile.hasCity() + "\n");
     //loop through the World and initialize the tiles
     for (int i = 0; i < WORLDSIZE; i++) {
       for (int j = 0; j < WORLDSIZE; j++) {
-        World[i][j] = initialTile;
+
+        //have to define a new Tile pointer for each location to not have issues
+        Tile tempTile = new TileImpl();
+        tempTile.setTileType(PLAINS);
+
+        World[i][j] = tempTile;
       }
     }
-
-    //initialTile.setTileType(FOREST);
 
 
     //initialize certain points to be different Tiles
 
     //Mountain at (2,2)
-    Tile mountainTile = new TileImpl();
-    mountainTile.setTileType(MOUNTAINS);
-    World[2][2] = mountainTile;
+    World[2][2].setTileType(MOUNTAINS);
 
     //Ocean at (1,0)
-    Tile OceanTile = new TileImpl();
-    OceanTile.setTileType(OCEANS);
-    World[1][0] = OceanTile;
+    World[1][0].setTileType(OCEANS);
 
     //Hills at (0,1)
-    Tile HillsTile = new TileImpl();
-    HillsTile.setTileType(HILLS);
-    World[0][1] = HillsTile;
+    World[0][1].setTileType(HILLS);
+
+
+    //initialize city location
+    //Red city at 1,1
+    World[1][1].changeCityStatus(true);
+    World[1][1].setOwner(RED);
+
+    //Blue city at 4,1
+    World[4][1].changeCityStatus(true);
+    World[4][1].setOwner(BLUE);
   }
 
   public Tile[][] returnWorld()
@@ -165,7 +167,7 @@ public class GameImpl implements Game {
     return World;
   }
 
-  public void setTileType(Position p, String s)
+  public void setTileTypeFromGame(Position p, String s)
   {
     World[p.getRow()][p.getColumn()].setTileType(s);
   }

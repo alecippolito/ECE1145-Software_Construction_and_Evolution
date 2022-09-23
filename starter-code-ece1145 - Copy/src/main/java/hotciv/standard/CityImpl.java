@@ -19,7 +19,7 @@ public class CityImpl {
      * produce a unit in this city
      * @return an integer, the amount of production
      * in the city treasury
-     */cd 
+     */
     public int getTreasury(){return 0;};
 
     /** return the type of unit this city is currently producing.

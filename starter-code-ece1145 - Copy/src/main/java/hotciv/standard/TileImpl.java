@@ -9,7 +9,7 @@ public class TileImpl implements Tile {
 
     //define the internal variables
     public String type;
-    public Player owner;
+    public Player owner = null;
     public Unit unit;
 
     public boolean cityStatus = false;
