@@ -41,6 +41,8 @@ public class GameImpl implements Game {
   Player currentPlayer = null;
   int worldAge = -4000;
   int turnNumber = 0;
+  int blueSize = 1;
+  int redSize = 1;
  
   public Tile getTileAt( Position p ) {
     return getTile(p);
@@ -80,10 +82,7 @@ public class GameImpl implements Game {
       return winner;
     }
     return null; }
-  public int getAge() {  /** return the age of the world. Negative numbers represent a world
-   * age BC (-4000 equals 4000 BC) while positive numbers are AD.
-   *  @return world age.
-   */
+  public int getAge() {
     // increment 100 after every year
     if(endOfRound() == true){
       worldAge = worldAge + 100;
