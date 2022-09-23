@@ -87,7 +87,6 @@ public class TestAlphaCiv {
 
     //System.out.print(game.returnTile(p1).getTypeString());
     Position p1 = new Position(1,0);
-    game.setTileType(p1,OCEANS);
     assertThat(game.getTile(p1).getTypeString(), is(OCEANS));
   }
 
@@ -95,8 +94,13 @@ public class TestAlphaCiv {
   public void testTileIsMountainAtRow2Column2() {
 
     Position p1 = new Position(2,2);
-    game.setTileType(p1,MOUNTAINS);
     assertThat(game.getTile(p1).getTypeString(), is(MOUNTAINS));
+  }
+
+  @Test
+  public void testTileIsHillsAtRow0Column1() {
+    Position p1 = new Position(0,1);
+    assertThat(game.getTile(p1).getTypeString(), is(HILLS));
   }
     
   @Test

@@ -2,6 +2,7 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
+import java.sql.Time;
 import java.util.Arrays;
 
 import static hotciv.framework.GameConstants.*;
@@ -117,13 +118,14 @@ public class GameImpl implements Game {
 
 
   //define the World constraints HERE, not the interface file
-  private Tile[][] World = new Tile[WORLDSIZE][WORLDSIZE];
+  //private Tile[][] World = new Tile[WORLDSIZE][WORLDSIZE];
+  private Tile[][] World;
 
 
   GameImpl()
   {
     //Define the size of the World
-    //World = new Tile[WORLDSIZE][WORLDSIZE];
+    World = new Tile[WORLDSIZE][WORLDSIZE];
 
     //give Tiles to every position in the world
     //for now: initialize to PLAINS
@@ -137,6 +139,26 @@ public class GameImpl implements Game {
         World[i][j] = initialTile;
       }
     }
+
+    //initialTile.setTileType(FOREST);
+
+
+    //initialize certain points to be different Tiles
+
+    //Mountain at (2,2)
+    Tile mountainTile = new TileImpl();
+    mountainTile.setTileType(MOUNTAINS);
+    World[2][2] = mountainTile;
+
+    //Ocean at (1,0)
+    Tile OceanTile = new TileImpl();
+    OceanTile.setTileType(OCEANS);
+    World[1][0] = OceanTile;
+
+    //Hills at (0,1)
+    Tile HillsTile = new TileImpl();
+    HillsTile.setTileType(HILLS);
+    World[0][1] = HillsTile;
   }
 
   public Tile[][] returnWorld()
