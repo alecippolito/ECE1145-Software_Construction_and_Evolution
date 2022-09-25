@@ -103,12 +103,38 @@ public class TestAlphaCiv {
     assertThat(game.getTile(p1).getTypeString(), is(HILLS));
   }
 
+  @Test
+  public void RedHasArcherAtPosition() {
+    Position p = new Position(2, 0);
+    Unit unitArcher = new UnitArcher(Player.RED);
+    game.setUnitAt(p, unitArcher);
+    assertThat(game.getUnitAt(p).getTypeString(), is(ARCHER));
+    assertThat(game.getUnitAt(p).getOwner(), is(Player.RED));
+  }
+
+  @Test
+  public void RedHasSettlerAtPosition() {
+    Position p = new Position(4, 3);
+    Unit unitSettler = new UnitSettler(Player.RED);
+    game.setUnitAt(p, unitSettler);
+    assertThat(game.getUnitAt(p).getTypeString(), is(SETTLER));
+    assertThat(game.getUnitAt(p).getOwner(), is(Player.RED));
+  }
+
+  @Test
+  public void BlueHasLegionAtPosition() {
+    Position p = new Position(3, 2);
+    Unit unitLegion = new UnitLegion(Player.BLUE);
+    game.setUnitAt(p, unitLegion);
+    assertThat(game.getUnitAt(p).getTypeString(), is(LEGION));
+    assertThat(game.getUnitAt(p).getOwner(), is(Player.BLUE));
+  }
     
   @Test
   public void playerShouldNotMoveOverMountain() {
-    Position p1 = new Position(3,2);
-    Position p2 = new Position(2,2);
-    game.setTileTypeFromGame(p2,MOUNTAINS);
+    Position p1 = new Position(3, 2);
+    Position p2 = new Position(2, 2);
+    game.setTileTypeFromGame(p2, MOUNTAINS);
     assertThat(game.moveUnit(p1, p2), is(false));
   }
     
@@ -138,5 +164,26 @@ public class TestAlphaCiv {
     Position p1 = new Position(4,1);
     assertThat(game.getTile(p1).hasCity(), is(true));
     assertThat(game.getTile(p1).getOwner(), is(Player.BLUE));
+  }
+    
+  @Test
+  public void RedShouldNotMoveBlue() {
+    Position p1 = new Position(3, 2);
+    Position p2 = new Position(3, 1);
+    Unit unitLegion = new UnitLegion(Player.BLUE);
+    game.setUnitAt(p1, unitLegion);
+    assertThat(game.moveUnit(p1, p2), is(false));
+  }
+    
+  @Test
+  public void AttackUnit() {
+    Position p1 = new Position(3, 2);
+    Position p2 = new Position(4, 3);
+    Unit unitLegion = new UnitLegion(Player.RED);
+    game.setUnitAt(p1, unitLegion);
+    Unit unitSettler = new UnitSettler(Player.BLUE);
+    game.setUnitAt(p2, unitSettler);
+    assertThat(game.moveUnit(p1, p2), is(true));
+    assertThat(game.getUnitAt(p2).getTypeString(), is(LEGION));
   }
 }
