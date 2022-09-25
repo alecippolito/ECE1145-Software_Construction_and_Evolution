@@ -163,19 +163,17 @@ public class TestAlphaCiv {
     assertThat(game.getTile(p1).hasCity(), is(true));
     assertThat(game.getTile(p1).getOwner(), is(Player.BLUE));
   }
-<<<<<<< HEAD
 
   @Test
-  public void testCityPopulationSizeEqualsOne(){
+  public void testCityPopulationSizeEqualsOne() {
 
     //Cities were defined in the constructor for this iteration (2)- so we will test both cities for their population size
-    Position p1 = new Position(1,1);
-    Position p2 = new Position(4,1);
+    Position p1 = new Position(1, 1);
+    Position p2 = new Position(4, 1);
     assertThat(game.getTile(p1).returnCity().returnPopulation(), is(1));
     assertThat(game.getTile(p2).returnCity().returnPopulation(), is(1));
+  }
 
-=======
-    
   @Test
   public void RedShouldNotMoveBlue() {
     Position p1 = new Position(3, 2);
@@ -195,6 +193,5 @@ public class TestAlphaCiv {
     game.setUnitAt(p2, unitSettler);
     assertThat(game.moveUnit(p1, p2), is(true));
     assertThat(game.getUnitAt(p2).getTypeString(), is(LEGION));
->>>>>>> 886a19ad2bfb04a72edd73b18aabfe46728e6f66
   }
 }

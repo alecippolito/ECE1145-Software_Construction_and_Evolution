@@ -76,15 +76,12 @@ public interface Tile {
   public void removeCity();
     
   public Unit getUnit();
-<<<<<<< HEAD
 
   /**
    * Return the city class inside the Tile
    * @return City data
    */
   public City returnCity();
-=======
-    
+
   public void setUnit(Unit unit);
->>>>>>> 886a19ad2bfb04a72edd73b18aabfe46728e6f66
 }
