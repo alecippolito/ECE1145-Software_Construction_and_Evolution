@@ -1,5 +1,8 @@
 package hotciv.framework;
 
+import static hotciv.framework.City.*;
+
+
 /** Tile represents a single territory tile of a given type.
 
     Responsibilities:
@@ -57,9 +60,26 @@ public interface Tile {
    */
   public Player getOwner();
 
+  /** Function to see if there is a city at this location
+   * @return if there is a city at this location
+   */
   public boolean hasCity();
 
-  public void changeCityStatus(boolean status);
+  /**
+   * Create a city at this location
+   */
+  public void addCity();
+
+  /**
+   * Remove the city at this location
+   */
+  public void removeCity();
     
   public Unit getUnit();
+
+  /**
+   * Return the city class inside the Tile
+   * @return City data
+   */
+  public City returnCity();
 }

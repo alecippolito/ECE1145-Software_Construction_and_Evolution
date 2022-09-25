@@ -177,7 +177,8 @@ public interface Game {
 
 
   /**
-   * Change whether or not there is a city manually from the game class
+   * Change if there is a city manually from the game class
    */
-  public void setCityStatusFromGame(Position pos, boolean status);
+  public void setCityStatusFromGame(Position pos);
+
 }

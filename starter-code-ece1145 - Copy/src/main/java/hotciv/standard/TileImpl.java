@@ -1,18 +1,21 @@
 package hotciv.standard;
-import hotciv.framework.*;
 
-import static hotciv.framework.GameConstants.*;
-import static hotciv.framework.Player.*;
+import hotciv.framework.City;
+import hotciv.framework.Player;
+import hotciv.framework.Tile;
+import hotciv.framework.Unit;
 
+import java.util.Objects;
 
 public class TileImpl implements Tile {
 
     //define the internal variables
     public String type;
-    public Player owner = null;
+    public Player TileOwner = null;
     public Unit unit;
 
-    public boolean cityStatus = false;
+    //own a city inside a tile
+    public City CityData;
 
     public String getTypeString() {
         return type;
@@ -29,30 +32,42 @@ public class TileImpl implements Tile {
 
     public void setOwner(Player p)
     {
-        //System.out.print(p);
-        owner = p;
-        //System.out.print(owner + "\n");
+        TileOwner = p;
+
+        if (CityData.getOwner() == null){
+            CityData.setOwner(p);
+        }
     }
 
     public Player getOwner()
     {
-        //System.out.print(owner + "\n");
-        return owner;
+        return TileOwner;
     }
 
     public boolean hasCity()
     {
-        return cityStatus;
+        return Objects.nonNull(CityData);
     }
 
-    public void changeCityStatus(boolean status)
+    public void addCity()
     {
-        cityStatus = status;
+        CityData = new CityImpl();
+
+        //set the owner of the city to be the owner of the Tile it is on
+        CityData.setOwner(TileOwner);
+    }
+
+    public void removeCity()
+    {
+        CityData = null;
     }
     
     public Unit getUnit() {
         return unit;
     }
 
+    public City returnCity(){
+        return CityData;
+    }
 
 }

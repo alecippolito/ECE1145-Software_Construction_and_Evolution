@@ -154,11 +154,11 @@ public class GameImpl implements Game {
 
     //initialize city location
     //Red city at 1,1
-    World[1][1].changeCityStatus(true);
+    World[1][1].addCity();
     World[1][1].setOwner(RED);
 
     //Blue city at 4,1
-    World[4][1].changeCityStatus(true);
+    World[4][1].addCity();
     World[4][1].setOwner(BLUE);
   }
 
@@ -180,7 +180,9 @@ public class GameImpl implements Game {
     World[pos.getRow()][pos.getColumn()].setOwner(pl);
   }
 
-  public void setCityStatusFromGame(Position pos, boolean status){
-    World[pos.getRow()][pos.getColumn()].changeCityStatus(status);
+  public void setCityStatusFromGame(Position pos){
+    World[pos.getRow()][pos.getColumn()].addCity();
   }
+
+
 }

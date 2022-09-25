@@ -125,8 +125,6 @@ public class TestAlphaCiv {
 
     //tiles and ownership should be initialized in this iteration's constructor for the game class
     Position p1 = new Position(1,1);
-    //game.setCityStatusFromGame(p1,true);
-    //game.setOwnerFromGame(p1,RED);
     assertThat(game.getTile(p1).hasCity(), is(true));
     assertThat(game.getTile(p1).getOwner(), is(Player.RED));
   }
@@ -138,5 +136,16 @@ public class TestAlphaCiv {
     Position p1 = new Position(4,1);
     assertThat(game.getTile(p1).hasCity(), is(true));
     assertThat(game.getTile(p1).getOwner(), is(Player.BLUE));
+  }
+
+  @Test
+  public void testCityPopulationSizeEqualsOne(){
+
+    //Cities were defined in the constructor for this iteration (2)- so we will test both cities for their population size
+    Position p1 = new Position(1,1);
+    Position p2 = new Position(4,1);
+    assertThat(game.getTile(p1).returnCity().returnPopulation(), is(1));
+    assertThat(game.getTile(p2).returnCity().returnPopulation(), is(1));
+
   }
 }

@@ -31,6 +31,13 @@ Responsibilities:
 
 */
 public interface City {
+
+  /** manually set the owner of the city
+   * @param p Player
+   */
+  public void setOwner(Player p);
+
+
   /** return the owner of this city.
    * @return the player that controls this city.
    */
@@ -61,5 +68,11 @@ public interface City {
    * for valid return values.
    */
   public String getWorkforceFocus();
+
+  /**
+   * Return the population size of the city
+   * @return an integer containing the population
+   */
+  public int returnPopulation();
 
 }

@@ -1,12 +1,31 @@
 package hotciv.standard;
 
+import hotciv.framework.City;
 import hotciv.framework.Player;
 
-public class CityImpl {
+
+
+public class CityImpl implements City {
+
+    //Has an owner
+    Player CityOwner = null;
+
+    //keep track of population size
+    int population = 1;
+
+    /** manually set the owner of the city
+     * @param p Player
+     */
+    public void setOwner(Player p){
+        CityOwner = p;
+    }
+
     /** return the owner of this city.
      * @return the player that controls this city.
      */
-    public Player getOwner(){return null;};
+    public Player getOwner(){
+        return CityOwner;
+    };
 
     /** return the size of the population.
      * @return population size.
@@ -33,4 +52,8 @@ public class CityImpl {
      * for valid return values.
      */
     public String getWorkforceFocus(){return "";};
+
+    public int returnPopulation(){
+        return population;
+    }
 }
