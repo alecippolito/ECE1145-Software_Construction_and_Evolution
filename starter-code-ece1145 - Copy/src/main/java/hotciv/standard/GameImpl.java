@@ -48,10 +48,20 @@ public class GameImpl implements Game {
   public Tile getTileAt( Position p ) {
     return getTile(p);
   }
+ 
   public Unit getUnitAt( Position p ) {
     return getTileAt(p).getUnit();
   }
+ 
+  public void setUnitAt(Position p, Unit u) {
+    getTileAt(p).setUnit(u);
+  }
+  public void removeUnitAt(Position p) {
+    getTileAt(p).setUnit(null);
+  }
+ 
   public City getCityAt( Position p ) { return null; }
+ 
   public Player getPlayerInTurn() {
     if( currentPlayer == null){
       currentPlayer = Player.BLUE;
@@ -83,25 +93,39 @@ public class GameImpl implements Game {
       return winner;
     }
     return null; }
+ 
   public int getAge() {
     // increment 100 after every year
     if(endOfRound() == true){
       worldAge = worldAge + 100;
     }
     return worldAge;}
+ 
   public boolean moveUnit( Position from, Position to ) {
     Unit fUnit = getUnitAt(from);
     Unit tUnit = getUnitAt(to);
     Tile m = getTileAt(to);
-    //Check if unit can move to position and is not blocked by mountains or oceans
-    if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
+    //Check if terrain can be moved over
+    if (m.getTypeString().equals(FOREST) || m.getTypeString().equals(HILLS) || m.getTypeString().equals(PLAINS)) {
+      //Check units if valid to control or move into
+      if (getUnitAt(from).getOwner() != currentPlayerInTurn)
+        return false;
+      else {
+        if (tUnit.getOwner() != currentPlayerInTurn) {
+          //Remove and replace unit if being attacked
+          removeUnitAt(to);
+          setUnitAt(to, fUnit);
+          removeUnitAt(from);
+          return true;
+        } else if (tUnit.getOwner() == currentPlayerInTurn) {
+          return false;
+        }
+        return true;
+      }
+    } else
       return false;
-    //Check units if valid to control or move into
-    else if (!fUnit.getOwner().equals(currentPlayerInTurn) || (tUnit.getOwner().equals(currentPlayerInTurn) && fUnit.getOwner().equals(currentPlayerInTurn)))
-      return false;
-    else
-      return true;
   }
+ 
   public void endOfTurn() {
     turnNumber++;
   }
@@ -111,6 +135,7 @@ public class GameImpl implements Game {
       return false;
     } return true;
   }
+ 
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
   public void performUnitActionAt( Position p ) {}
