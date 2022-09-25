@@ -53,6 +53,10 @@ public class TileImpl implements Tile {
     public Unit getUnit() {
         return unit;
     }
+    
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
 
 
 }
