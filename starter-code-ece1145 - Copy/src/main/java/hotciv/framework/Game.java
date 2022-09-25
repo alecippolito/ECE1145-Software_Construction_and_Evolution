@@ -47,6 +47,21 @@ public interface Game {
    * p, OR null if no unit is present at position p.
    */
   public Unit getUnitAt( Position p );
+   
+  /** remove the uppermost unit in the stack of units at position 'p'
+   * in the world and set to null.
+   * Precondition: Position p is a valid position in the world.
+   * @param p the position in the world.
+   */
+  public void removeUnitAt(Position p);
+   
+  /** set the uppermost unit in the stack of units at position 'p'
+   * in the world to unit 'u'.
+   * Precondition: Position p is a valid position in the world.
+   * @param p the position in the world.
+   * @param u the unit being placed at position.
+   */
+  public void setUnitAt( Position p, Unit u);
   
   /** return the city at position 'p' in the world.
    * Precondition: Position p is a valid position in the world.
