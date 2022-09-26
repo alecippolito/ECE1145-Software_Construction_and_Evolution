@@ -204,7 +204,7 @@ public class TestAlphaCiv {
     game.getTileAt(p1).returnCity().addProduction(10);
     assertThat(game.getTileAt(p1).returnCity().getTreasury(), is(10));
 
-    /*
+
     //Test 2: If the production is high enough, a new Unit is created
     //For the city at (1,1), the UnitFocus is already defined in the constructor - Legion
     assertThat(game.getTile(p1).returnCity().getUnitFocus(), is(LEGION));
@@ -212,7 +212,7 @@ public class TestAlphaCiv {
     game.getTile(p1).returnCity().addProduction(5);
     assertThat(game.getTile(p1).returnCity().NewUnitPossible(), is(true));
 
-    /*
+
     //Test 3: create a Unit either on or Adjacent to City
     if (game.getTileAt(p1).returnCity().NewUnitPossible() == true){
       game.createNewUnitFromCity(p1);
@@ -223,6 +223,6 @@ public class TestAlphaCiv {
       //Test 4: Production is subtracted when a new unit is placed
       assertThat(game.getTile(p1).returnCity().getTreasury(), is(0));
     }
-    */
+
   }
 }
