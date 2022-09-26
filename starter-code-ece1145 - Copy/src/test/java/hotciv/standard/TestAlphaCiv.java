@@ -170,8 +170,8 @@ public class TestAlphaCiv {
     //Cities were defined in the constructor for this iteration (2)- so we will test both cities for their population size
     Position p1 = new Position(1, 1);
     Position p2 = new Position(4, 1);
-    assertThat(game.getTile(p1).returnCity().returnPopulation(), is(1));
-    assertThat(game.getTile(p2).returnCity().returnPopulation(), is(1));
+    assertThat(game.getTile(p1).returnCity().getSize(), is(1));
+    assertThat(game.getTile(p2).returnCity().getSize(), is(1));
   }
 
   @Test
@@ -193,5 +193,36 @@ public class TestAlphaCiv {
     game.setUnitAt(p2, unitSettler);
     assertThat(game.moveUnit(p1, p2), is(true));
     assertThat(game.getUnitAt(p2).getTypeString(), is(LEGION));
+  }
+
+  @Test
+  public void TestAddingNewUnitWithEnoughProductionFromCity() {
+
+    //Test 1: Add production to cities, the production number changes
+    Position p1 = new Position(1,1);
+    assertThat(game.getTileAt(p1).returnCity().getTreasury(), is(0));
+    game.getTileAt(p1).returnCity().addProduction(10);
+    assertThat(game.getTileAt(p1).returnCity().getTreasury(), is(10));
+
+    /*
+    //Test 2: If the production is high enough, a new Unit is created
+    //For the city at (1,1), the UnitFocus is already defined in the constructor - Legion
+    assertThat(game.getTile(p1).returnCity().getUnitFocus(), is(LEGION));
+    assertThat(game.getTile(p1).returnCity().NewUnitPossible(), is(false));
+    game.getTile(p1).returnCity().addProduction(5);
+    assertThat(game.getTile(p1).returnCity().NewUnitPossible(), is(true));
+
+    /*
+    //Test 3: create a Unit either on or Adjacent to City
+    if (game.getTileAt(p1).returnCity().NewUnitPossible() == true){
+      game.createNewUnitFromCity(p1);
+
+      //should be a unit on the tile with the city
+      assertThat(game.getTile(p1).getUnit().getTypeString(), is(LEGION));
+
+      //Test 4: Production is subtracted when a new unit is placed
+      assertThat(game.getTile(p1).returnCity().getTreasury(), is(0));
+    }
+    */
   }
 }

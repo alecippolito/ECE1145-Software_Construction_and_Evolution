@@ -194,6 +194,28 @@ public interface Game {
   /**
    * Change if there is a city manually from the game class
    */
-  public void setCityStatusFromGame(Position pos);
+  public void AddCityFromGame(Position pos);
+
+  /**
+   * At the end of the round, run this function to add 6 production to all cities
+   */
+  public void AddProductionEndOfRound();
+
+  /**
+   * Manually set the Work Focus from the game (production, food)
+   * @param s game constant: either food or production
+   */
+  public void setWorkFocusFromGame(Position p, String s);
+
+  /**
+   * Manually set which unit the city should produce
+   * @param s game constant: Archer, legion, settler
+   */
+  public void setUnitFocusFromGame(Position p, String s);
+
+  /**
+   * Ran If and only If the City is able to create a new Unit, from the City.NewUnitPossible() Function
+   */
+  public void createNewUnitFromCity(Position p);
 
 }
