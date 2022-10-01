@@ -22,11 +22,29 @@ public class CityImpl implements City {
     //Every time the Unit focus is updated, change the internal cost of the unit
     int UnitCost = -1;
 
+
+    /**
+     * Constructor: Define the variables when you first call it
+     */
+    CityImpl(Player p, String UnitFocus, String WorkFocus){
+        setOwner(p);
+        setUnitFocus(UnitFocus);
+        setWorkforceFocus(WorkFocus);
+    }
+
+    /**
+     * Another constructor: Only containing the owner
+     */
+    CityImpl(Player p){
+        setOwner(p);
+    }
+
+
     /** manually set the owner of the city
      * @param p Player
      */
     public void setOwner(Player p){
-        CityOwner = p;
+        this.CityOwner = p;
     }
 
     /** return the owner of this city.

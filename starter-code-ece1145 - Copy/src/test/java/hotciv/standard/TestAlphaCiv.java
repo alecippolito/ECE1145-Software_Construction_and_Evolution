@@ -45,7 +45,7 @@ public class TestAlphaCiv {
   /** Fixture for alphaciv testing. */
   @Before
   public void setUp() {
-    game = new GameImpl();
+    game = new GameImpl(new AlphaBuild());
   }
 
   // FRS p. 455 states that 'Red is the first player to take a turn'.
@@ -87,27 +87,27 @@ public class TestAlphaCiv {
 
     //System.out.print(game.returnTile(p1).getTypeString());
     Position p1 = new Position(1,0);
-    assertThat(game.getTile(p1).getTypeString(), is(OCEANS));
+    assertThat(game.getTileAt(p1).getTypeString(), is(OCEANS));
   }
 
   @Test
   public void testTileIsMountainAtRow2Column2() {
 
     Position p1 = new Position(2,2);
-    assertThat(game.getTile(p1).getTypeString(), is(MOUNTAINS));
+    assertThat(game.getTileAt(p1).getTypeString(), is(MOUNTAINS));
   }
 
   @Test
   public void testTileIsHillsAtRow0Column1() {
     Position p1 = new Position(0,1);
-    assertThat(game.getTile(p1).getTypeString(), is(HILLS));
+    assertThat(game.getTileAt(p1).getTypeString(), is(HILLS));
   }
 
   @Test
   public void RedHasArcherAtPosition() {
     Position p = new Position(2, 0);
     Unit unitArcher = new UnitArcher(Player.RED);
-    game.setUnitAt(p, unitArcher);
+    ((GameImpl) game).setUnitAt(p, unitArcher);
     assertThat(game.getUnitAt(p).getTypeString(), is(ARCHER));
     assertThat(game.getUnitAt(p).getOwner(), is(Player.RED));
   }
@@ -116,7 +116,7 @@ public class TestAlphaCiv {
   public void RedHasSettlerAtPosition() {
     Position p = new Position(4, 3);
     Unit unitSettler = new UnitSettler(Player.RED);
-    game.setUnitAt(p, unitSettler);
+    ((GameImpl) game).setUnitAt(p, unitSettler);
     assertThat(game.getUnitAt(p).getTypeString(), is(SETTLER));
     assertThat(game.getUnitAt(p).getOwner(), is(Player.RED));
   }
@@ -125,7 +125,7 @@ public class TestAlphaCiv {
   public void BlueHasLegionAtPosition() {
     Position p = new Position(3, 2);
     Unit unitLegion = new UnitLegion(Player.BLUE);
-    game.setUnitAt(p, unitLegion);
+    ((GameImpl) game).setUnitAt(p, unitLegion);
     assertThat(game.getUnitAt(p).getTypeString(), is(LEGION));
     assertThat(game.getUnitAt(p).getOwner(), is(Player.BLUE));
   }
@@ -134,7 +134,7 @@ public class TestAlphaCiv {
   public void playerShouldNotMoveOverMountain() {
     Position p1 = new Position(3, 2);
     Position p2 = new Position(2, 2);
-    game.setTileTypeFromGame(p2, MOUNTAINS);
+    ((GameImpl) game).setTileTypeFromGame(p2, MOUNTAINS);
     assertThat(game.moveUnit(p1, p2), is(false));
   }
     
@@ -142,7 +142,7 @@ public class TestAlphaCiv {
   public void playerShouldNotMoveOverOcean() {
     Position p1 = new Position(2, 0);
     Position p2 = new Position(1, 0);
-    game.setTileTypeFromGame(p2, OCEANS);
+    ((GameImpl) game).setTileTypeFromGame(p2, OCEANS);
     assertThat(game.moveUnit(p1, p2), is(false));
   }
 
@@ -151,8 +151,8 @@ public class TestAlphaCiv {
 
     //tiles and ownership should be initialized in this iteration's constructor for the game class
     Position p1 = new Position(1,1);
-    assertThat(game.getTile(p1).hasCity(), is(true));
-    assertThat(game.getTile(p1).getOwner(), is(Player.RED));
+    assertThat(((TileImpl) game.getTileAt(p1)).hasCity(), is(true));
+    assertThat(((TileImpl) game.getTileAt(p1)).returnCity().getOwner(), is(Player.RED));
   }
 
   @Test
@@ -160,8 +160,8 @@ public class TestAlphaCiv {
 
     //tiles and ownership should be initialized in this iteration's constructor for the game class
     Position p1 = new Position(4,1);
-    assertThat(game.getTile(p1).hasCity(), is(true));
-    assertThat(game.getTile(p1).getOwner(), is(Player.BLUE));
+    assertThat(((TileImpl) game.getTileAt(p1)).hasCity(), is(true));
+    assertThat(((TileImpl) game.getTileAt(p1)).returnCity().getOwner(), is(Player.BLUE));
   }
 
   @Test
@@ -170,8 +170,8 @@ public class TestAlphaCiv {
     //Cities were defined in the constructor for this iteration (2)- so we will test both cities for their population size
     Position p1 = new Position(1, 1);
     Position p2 = new Position(4, 1);
-    assertThat(game.getTile(p1).returnCity().getSize(), is(1));
-    assertThat(game.getTile(p2).returnCity().getSize(), is(1));
+    assertThat(game.getCityAt(p1).getSize(), is(1));
+    assertThat(game.getCityAt(p2).getSize(), is(1));
   }
 
   @Test
@@ -179,7 +179,7 @@ public class TestAlphaCiv {
     Position p1 = new Position(3, 2);
     Position p2 = new Position(3, 1);
     Unit unitLegion = new UnitLegion(Player.BLUE);
-    game.setUnitAt(p1, unitLegion);
+    ((GameImpl) game).setUnitAt(p1, unitLegion);
     assertThat(game.moveUnit(p1, p2), is(false));
   }
     
@@ -188,9 +188,9 @@ public class TestAlphaCiv {
     Position p1 = new Position(3, 2);
     Position p2 = new Position(4, 3);
     Unit unitLegion = new UnitLegion(Player.RED);
-    game.setUnitAt(p1, unitLegion);
+    ((GameImpl) game).setUnitAt(p1, unitLegion);
     Unit unitSettler = new UnitSettler(Player.BLUE);
-    game.setUnitAt(p2, unitSettler);
+    ((GameImpl) game).setUnitAt(p2, unitSettler);
     assertThat(game.moveUnit(p1, p2), is(true));
     assertThat(game.getUnitAt(p2).getTypeString(), is(LEGION));
   }
@@ -200,28 +200,28 @@ public class TestAlphaCiv {
 
     //Test 1: Add production to cities, the production number changes
     Position p1 = new Position(1,1);
-    assertThat(game.getTileAt(p1).returnCity().getTreasury(), is(0));
-    game.getTileAt(p1).returnCity().addProduction(10);
-    assertThat(game.getTileAt(p1).returnCity().getTreasury(), is(10));
+    assertThat(game.getCityAt(p1).getTreasury(), is(0));
+    ((CityImpl) game.getCityAt(p1)).addProduction(10);
+    assertThat(game.getCityAt(p1).getTreasury(), is(10));
 
 
     //Test 2: If the production is high enough, a new Unit is created
     //For the city at (1,1), the UnitFocus is already defined in the constructor - Legion
-    assertThat(game.getTile(p1).returnCity().getUnitFocus(), is(LEGION));
-    assertThat(game.getTile(p1).returnCity().NewUnitPossible(), is(false));
-    game.getTile(p1).returnCity().addProduction(5);
-    assertThat(game.getTile(p1).returnCity().NewUnitPossible(), is(true));
+    assertThat(((CityImpl) game.getCityAt(p1)).getUnitFocus(), is(LEGION));
+    assertThat(((CityImpl) game.getCityAt(p1)).NewUnitPossible(), is(false));
+    ((CityImpl) game.getCityAt(p1)).addProduction(5);
+    assertThat(((CityImpl) game.getCityAt(p1)).NewUnitPossible(), is(true));
 
 
     //Test 3: create a Unit either on or Adjacent to City
-    if (game.getTileAt(p1).returnCity().NewUnitPossible() == true){
-      game.createNewUnitFromCity(p1);
+    if (((CityImpl) game.getCityAt(p1)).NewUnitPossible()){
+      ((GameImpl) game).createNewUnitFromCity(p1);
 
       //should be a unit on the tile with the city
-      assertThat(game.getTile(p1).getUnit().getTypeString(), is(LEGION));
+      assertThat(((TileImpl) game.getTileAt(p1)).getUnit().getTypeString(), is(LEGION));
 
       //Test 4: Production is subtracted when a new unit is placed
-      assertThat(game.getTile(p1).returnCity().getTreasury(), is(0));
+      assertThat(game.getCityAt(p1).getTreasury(), is(0));
     }
 
   }

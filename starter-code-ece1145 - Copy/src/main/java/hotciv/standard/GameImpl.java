@@ -52,23 +52,27 @@ public class GameImpl implements Game {
   //List containing every Location with a city
   ArrayList<Position> CityLocations = new ArrayList<Position>();
 
+  //Store the world building strategy
+  worldBuild build;
+
+
  
   public Tile getTileAt( Position p ) {
-    return getTile(p);
+    return World[p.getRow()][p.getColumn()];
   }
  
   public Unit getUnitAt( Position p ) {
-    return getTileAt(p).getUnit();
+    return ((TileImpl) getTileAt(p)).getUnit();
   }
- 
+
   public void setUnitAt(Position p, Unit u) {
-    getTileAt(p).setUnit(u);
+    ((TileImpl) getTileAt(p)).setUnit(u);
   }
   public void removeUnitAt(Position p) {
-    getTileAt(p).setUnit(null);
+    ((TileImpl) getTileAt(p)).setUnit(null);
   }
  
-  public City getCityAt( Position p ) { return null; }
+  public City getCityAt( Position p ) { return ((TileImpl) getTileAt(p)).returnCity();}
  
   public Player getPlayerInTurn() {
     if( currentPlayer == null){
@@ -104,7 +108,7 @@ public class GameImpl implements Game {
  
   public int getAge() {
     // increment 100 after every year
-    if(endOfRound() == true){
+    if(endOfRound()){
       worldAge = worldAge + 100;
     }
     return worldAge;}
@@ -153,50 +157,11 @@ public class GameImpl implements Game {
   private Tile[][] World;
 
 
-  GameImpl()
+  GameImpl(worldBuild buildMode)
   {
-    //Define the size of the World
-    World = new Tile[WORLDSIZE][WORLDSIZE];
+    this.build = buildMode;
 
-    //give Tiles to every position in the world
-    //for now: initialize to PLAINS
-    //loop through the World and initialize the tiles
-    for (int i = 0; i < WORLDSIZE; i++) {
-      for (int j = 0; j < WORLDSIZE; j++) {
-
-        //have to define a new Tile pointer for each location to not have issues
-        Tile tempTile = new TileImpl();
-        tempTile.setTileType(PLAINS);
-
-        World[i][j] = tempTile;
-      }
-    }
-
-
-    //initialize certain points to be different Tiles
-
-    //Mountain at (2,2)
-    World[2][2].setTileType(MOUNTAINS);
-
-    //Ocean at (1,0)
-    World[1][0].setTileType(OCEANS);
-
-    //Hills at (0,1)
-    World[0][1].setTileType(HILLS);
-
-
-    //initialize city location
-    //Red city at 1,1
-    Position p1 = new Position(1,1);
-    AddCityFromGame(p1);
-    setOwnerFromGame(p1,RED);
-    setUnitFocusFromGame(p1,LEGION);
-    setWorkFocusFromGame(p1,productionFocus);
-
-    //Blue city at 4,1
-    p1 = new Position(4,1);
-    AddCityFromGame(p1);
-    setOwnerFromGame(p1,BLUE);
+    World = build.createWorld();
   }
 
   public Tile[][] returnWorld()
@@ -206,19 +171,15 @@ public class GameImpl implements Game {
 
   public void setTileTypeFromGame(Position p, String s)
   {
-    World[p.getRow()][p.getColumn()].setTileType(s);
-  }
-
-  public Tile getTile(Position p){
-    return World[p.getRow()][p.getColumn()];
+    ((TileImpl) World[p.getRow()][p.getColumn()]).setTileType(s);
   }
 
   public void setOwnerFromGame(Position pos, Player pl){
-    World[pos.getRow()][pos.getColumn()].setOwner(pl);
+    ((TileImpl) World[pos.getRow()][pos.getColumn()]).setOwner(pl);
   }
 
-  public void AddCityFromGame(Position pos){
-    World[pos.getRow()][pos.getColumn()].addCity();
+  public void AddCityFromGame(Position pos, Player owner, String unitFocus, String workFocus){
+    ((TileImpl) World[pos.getRow()][pos.getColumn()]).addCity(owner, unitFocus, workFocus);
 
     //Add the city to the list of positions with a city
     CityLocations.add(pos);
@@ -229,47 +190,47 @@ public class GameImpl implements Game {
     //Loop through list of Positions with a city and add 6 production to each
     for (int i = 0; i < CityLocations.size(); i++){
 
-      getTile(CityLocations.get(i)).returnCity().addProduction(6);
+      ((CityImpl) getCityAt(CityLocations.get(i))).addProduction(6);
     }
   }
 
   public void setWorkFocusFromGame(Position p, String s){
 
-    if (getTile(p).hasCity() == false){
+    if (!((TileImpl) getTileAt(p)).hasCity()){
       throw new RuntimeException("Entered position does not have a city");
     }
 
-    getTile(p).returnCity().setWorkforceFocus(s);
+    ((CityImpl) getCityAt(p)).setWorkforceFocus(s);
 
   }
 
   public void setUnitFocusFromGame(Position p, String s){
-    if (getTile(p).hasCity() == false){
+    if (!((TileImpl) getTileAt(p)).hasCity()){
       throw new RuntimeException("Entered position does not have a city");
     }
 
-    getTile(p).returnCity().setUnitFocus(s);
+    ((CityImpl) getCityAt(p)).setUnitFocus(s);
   }
 
   public void createNewUnitFromCity(Position p){
 
-    if (getTile(p).hasCity() == false){
+    if (!((TileImpl) getTileAt(p)).hasCity()){
       throw new RuntimeException("Entered position does not have a city");
     }
 
     //Define a unit
-    String unit = getTile(p).returnCity().getUnitFocus();
+    String unit = ((CityImpl) getCityAt(p)).getUnitFocus();
     Unit tempUnit = null;
     int tempCost = 0;
 
     if (unit == ARCHER){
-      tempUnit = new UnitArcher(getTile(p).getOwner());
+      tempUnit = new UnitArcher(((TileImpl) getTileAt(p)).getOwner());
       tempCost = 10;
     } else if (unit == LEGION) {
-      tempUnit = new UnitLegion(getTile(p).getOwner());
+      tempUnit = new UnitLegion(((TileImpl) getTileAt(p)).getOwner());
       tempCost = 15;
     } else if (unit == SETTLER) {
-      tempUnit = new UnitSettler(getTile(p).getOwner());
+      tempUnit = new UnitSettler(((TileImpl) getTileAt(p)).getOwner());
       tempCost = 30;
     }
 
@@ -277,41 +238,41 @@ public class GameImpl implements Game {
     //step 2: determine the correct location to place the unit
 
     //at the city
-    if (getTile(p).getUnit() == null){
-      getTile(p).setUnit(tempUnit);
-      getTile(p).returnCity().subtractProduction(tempCost);
+    if (((TileImpl) getTileAt(p)).getUnit() == null){
+      ((TileImpl) getTileAt(p)).setUnit(tempUnit);
+      ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
       return;
     }
 
     //north of the city (one row up)
     if (p.getRow() != 0){
       Position newPos = new Position(p.getRow()+1,p.getColumn());
-      getTile(newPos).setUnit(tempUnit);
-      getTile(p).returnCity().subtractProduction(tempCost);
+      ((TileImpl) getTileAt(newPos)).setUnit(tempUnit);
+      ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
       return;
     }
 
     //east of the city (one column right)
     if (p.getColumn() != 15){
       Position newPos = new Position(p.getRow(),p.getColumn()+1);
-      getTile(newPos).setUnit(tempUnit);
-      getTile(p).returnCity().subtractProduction(tempCost);
+      ((TileImpl) getTileAt(newPos)).setUnit(tempUnit);
+      ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
       return;
     }
 
     //south of the city (one row down)
     if (p.getRow() != 15){
       Position newPos = new Position(p.getRow()-1,p.getColumn());
-      getTile(newPos).setUnit(tempUnit);
-      getTile(p).returnCity().subtractProduction(tempCost);
+      ((TileImpl) getTileAt(newPos)).setUnit(tempUnit);
+      ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
       return;
     }
 
     //west of the city (one column left)
     if (p.getColumn() != 0){
       Position newPos = new Position(p.getRow(),p.getColumn()-1);
-      getTile(newPos).setUnit(tempUnit);
-      getTile(p).returnCity().subtractProduction(tempCost);
+      ((TileImpl) getTileAt(newPos)).setUnit(tempUnit);
+      ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
     }
 
     //If all units are occupied, nothing is placed

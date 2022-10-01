@@ -21,6 +21,11 @@ public class TileImpl implements Tile {
         return type;
     }
 
+    //constructor: set the Tile type
+    TileImpl(String s){
+        type = s;
+    }
+
     public void setTileType(String s)
     {
         //should be a string from the game Constants class
@@ -35,7 +40,7 @@ public class TileImpl implements Tile {
         TileOwner = p;
 
         if (CityData.getOwner() == null){
-            CityData.setOwner(p);
+            ((CityImpl) CityData).setOwner(p);
         }
     }
 
@@ -49,12 +54,9 @@ public class TileImpl implements Tile {
         return Objects.nonNull(CityData);
     }
 
-    public void addCity()
+    public void addCity(Player p, String u, String w)
     {
-        CityData = new CityImpl();
-
-        //set the owner of the city to be the owner of the Tile it is on
-        CityData.setOwner(TileOwner);
+        CityData = new CityImpl(p,u,w);
     }
 
     public void removeCity()

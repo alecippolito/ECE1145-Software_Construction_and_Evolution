@@ -1,37 +1,36 @@
 package hotciv.framework;
 
-
 /** Game is the central interface allowing a client to access and
- * modify the state of a HotCiv game.  
+ * modify the state of a HotCiv game.
 
-   This source code is from the book 
-     "Flexible, Reliable Software:
-       Using Patterns and Agile Development"
-     published 2010 by CRC Press.
-   Author: 
-     Henrik B Christensen 
-     Department of Computer Science
-     Aarhus University
-   
-   Please visit http://www.baerbak.com/ for further information.
+ This source code is from the book
+ "Flexible, Reliable Software:
+ Using Patterns and Agile Development"
+ published 2010 by CRC Press.
+ Author:
+ Henrik B Christensen
+ Department of Computer Science
+ Aarhus University
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
- 
-       http://www.apache.org/licenses/LICENSE-2.0
- 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+ Please visit http://www.baerbak.com/ for further information.
 
-*/
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+ */
 
 public interface Game {
   // === Accessor methods ===================================
-  
+
   /** return a specific tile.
    * Precondition: Position p is a valid position in the world.
    * @param p the position in the world that must be returned.
@@ -47,22 +46,7 @@ public interface Game {
    * p, OR null if no unit is present at position p.
    */
   public Unit getUnitAt( Position p );
-   
-  /** remove the uppermost unit in the stack of units at position 'p'
-   * in the world and set to null.
-   * Precondition: Position p is a valid position in the world.
-   * @param p the position in the world.
-   */
-  public void removeUnitAt(Position p);
-   
-  /** set the uppermost unit in the stack of units at position 'p'
-   * in the world to unit 'u'.
-   * Precondition: Position p is a valid position in the world.
-   * @param p the position in the world.
-   * @param u the unit being placed at position.
-   */
-  public void setUnitAt( Position p, Unit u);
-  
+
   /** return the city at position 'p' in the world.
    * Precondition: Position p is a valid position in the world.
    * @param p the position in the world.
@@ -75,21 +59,21 @@ public interface Game {
    * @return the player that is in turn
    */
   public Player getPlayerInTurn();
-    
-  /** return the player that has won the game. 
+
+  /** return the player that has won the game.
    * @return the player that has won. If the game is still
    * not finished then return null.
    */
   public Player getWinner();
-  
+
   /** return the age of the world. Negative numbers represent a world
    * age BC (-4000 equals 4000 BC) while positive numbers are AD.
    *  @return world age.
    */
-  public int getAge();  
-    
+  public int getAge();
+
   // === Mutator methods ======================================
-  
+
   /** move a unit from one position to another. If that other position
    * is occupied by an opponent unit, a battle is conducted leading to
    * either victory or defeat. If victorious then the opponent unit is
@@ -108,9 +92,9 @@ public interface Game {
    * position.)
    */
   public boolean moveUnit( Position from, Position to );
-  
+
   /** Tell the game that the current player has
-   * finished his/her turn. The next player is then 
+   * finished his/her turn. The next player is then
    * in turn. If all players have had their turns
    * then do end-of-round processing:
    * A) restore all units' move counts
@@ -121,33 +105,28 @@ public interface Game {
    */
   public void endOfTurn();
 
-  /**
-   * Tell the game that the end of the round has been reached.
-   */
-  public boolean endOfRound();
-
   /** change the work force's focus in a city, i.e. what
    * kind of production there will be emphasis on in the city.
    * Precondition: there is a city at location 'p'.
-   * @param p the position of the city whose focus 
-   * should be changed. 
+   * @param p the position of the city whose focus
+   * should be changed.
    * @param balance a string defining the focus of the work
-   * force in a city. Valid values are at least 
-   * GameConstants.productionFocus and 
+   * force in a city. Valid values are at least
+   * GameConstants.productionFocus and
    * GameConstants.foodFocus.
    */
   public void changeWorkForceFocusInCityAt( Position p, String balance );
-  
-  /** change the type of unit a city will produce next. 
+
+  /** change the type of unit a city will produce next.
    * Precondition: there is a city at location 'p'.
    * Predondition: the unit type is a valid type.
    * @param p the position of the city whose production
-   * should be changed. 
+   * should be changed.
    * @param unitType a string defining the type of unit that the
    * city should produce next.
    */
   public void changeProductionInCityAt( Position p, String unitType );
-  
+
   /** perform the action associated with the unit at position p.
    * Example: a settler unit may create a new city at its location.
    * Precondition: there is a unit at location 'p'.
@@ -155,67 +134,4 @@ public interface Game {
    * Nothing happens in case the unit has no associated action.
    */
   public void performUnitActionAt( Position p );
-
-
-  /**
-   * Mutator function: return the Tile data of the whole game
-   * @return Tile[][] - 16x16 grid of tiles
-   */
-  public Tile[][] returnWorld();
-
-
-  /**
-   * Set the Tile at the input position to the input string
-   * @param p Input location
-   * @param s New Tile Type
-   */
-  public void setTileTypeFromGame(Position p, String s);
-   
-   /**
-   * Set the Unit at the input position to the input owner
-   * @param p Input location
-   * @param u Unit Player
-   */
-  // public void setUnitOwner(Position p, Player u);
-  // -- what is this? Giving errors and not implemented in GameImpl, Tests pass without this function
-
-  /**
-   * Return the tile at the given location
-   * @param p Input location
-   */
-  public Tile getTile(Position p);
-
-  /**
-   * Set the Owner of the tile manually from the game class
-   */
-  public void setOwnerFromGame(Position pos, Player pl);
-
-
-  /**
-   * Change if there is a city manually from the game class
-   */
-  public void AddCityFromGame(Position pos);
-
-  /**
-   * At the end of the round, run this function to add 6 production to all cities
-   */
-  public void AddProductionEndOfRound();
-
-  /**
-   * Manually set the Work Focus from the game (production, food)
-   * @param s game constant: either food or production
-   */
-  public void setWorkFocusFromGame(Position p, String s);
-
-  /**
-   * Manually set which unit the city should produce
-   * @param s game constant: Archer, legion, settler
-   */
-  public void setUnitFocusFromGame(Position p, String s);
-
-  /**
-   * Ran If and only If the City is able to create a new Unit, from the City.NewUnitPossible() Function
-   */
-  public void createNewUnitFromCity(Position p);
-
 }
