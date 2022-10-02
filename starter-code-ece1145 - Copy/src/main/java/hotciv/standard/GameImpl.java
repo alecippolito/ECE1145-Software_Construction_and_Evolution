@@ -150,7 +150,11 @@ public class GameImpl implements Game {
  
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
-  public void performUnitActionAt( Position p ) {}
+  public void performUnitActionAt( Position p ) {
+   Unit unit = getUnitAt(p);
+    if (unit != null && currentPlayerInTurn.equals(unit.getOwner())) {
+      actionStrategy.performUnitActionAt(World, p);
+  }
 
 
   //define the World constraints HERE, not the interface file
