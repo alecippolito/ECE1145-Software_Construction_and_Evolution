@@ -55,6 +55,9 @@ public class GameImpl implements Game {
   //Store the world building strategy
   worldBuild build;
 
+  //add an ActionStategy variable
+  private ActionStrategy actionStrategy;
+
 
  
   public Tile getTileAt( Position p ) {
@@ -151,9 +154,10 @@ public class GameImpl implements Game {
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
   public void performUnitActionAt( Position p ) {
-   Unit unit = getUnitAt(p);
+    Unit unit = getUnitAt(p);
     if (unit != null && currentPlayerInTurn.equals(unit.getOwner())) {
       actionStrategy.performUnitActionAt(World, p);
+    }
   }
 
 

@@ -1,9 +1,6 @@
 package hotciv.standard;
 
-import hotciv.framework.City;
-import hotciv.framework.Player;
-import hotciv.framework.Tile;
-import hotciv.framework.Unit;
+import hotciv.framework.*;
 
 import java.util.Objects;
 
@@ -25,6 +22,10 @@ public class TileImpl implements Tile {
     TileImpl(String s){
         type = s;
     }
+
+
+    //Add a position
+    Position position;
 
     public void setTileType(String s)
     {

@@ -27,7 +27,7 @@ public class TestGammaCiv {
         World = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
         for(int i = 0; i < GameConstants.WORLDSIZE; i++) {
             for( int j = 0; j < GameConstants.WORLDSIZE; j++) {
-                World[i][j] = new TileImpl ();
+                World[i][j] = new TileImpl(PLAINS);
             }
         }
         Gamma = new ActionStrategyGamma();
@@ -37,9 +37,9 @@ public class TestGammaCiv {
     @Test
     public void LegionDoesNothing() {
         Unit legion = new UnitLegion(Player.RED);
-        World[0][0].setUnit(legion);
+        ((TileImpl) World[0][0]).setUnit(legion);
         Gamma.performUnitActionAt(World, new Position(0,0));
-        assertEquals(LEGION, World[0][0].getUnit().getTypeString());
+        assertEquals(LEGION, ((TileImpl) World[0][0]).getUnit().getTypeString());
         assertEquals(2, legion.getDefensiveStrength());
         assertEquals(4, legion.getAttackingStrength());
         assertEquals(1, legion.getMoveCount());
@@ -49,21 +49,21 @@ public class TestGammaCiv {
     @Test
     public void SettlerBuildsCityOwnedByRed() {
         Unit settler = new UnitSettler(Player.RED);
-        World[0][0].setUnit(settler);
-        assertEquals(SETTLER, World[0][0].getUnit().getTypeString());
-        assertThat(World[0][0].returnCity(), is(nullValue()));
+        ((TileImpl) World[0][0]).setUnit(settler);
+        assertEquals(SETTLER, ((TileImpl) World[0][0]).getUnit().getTypeString());
+        assertThat(((TileImpl) World[0][0]).returnCity(), is(nullValue()));
         Gamma.performUnitActionAt(World, p);
-        assertThat(World[0][0].getUnit(), is(nullValue()));
-        assertEquals(RED, World[0][0].returnCity().getOwner());
-        assertEquals(ARCHER, World[0][0].returnCity().getUnitFocus());
-        assertEquals(productionFocus, World[0][0].returnCity().getWorkforceFocus());
+        assertThat(((TileImpl) World[0][0]).getUnit(), is(nullValue()));
+        assertEquals(RED, ((TileImpl) World[0][0]).returnCity().getOwner());
+        assertEquals(ARCHER, ((CityImpl) ((TileImpl) World[0][0]).returnCity()).getUnitFocus());
+        assertEquals(productionFocus, ((TileImpl) World[0][0]).returnCity().getWorkforceFocus());
     }
 
     @Test
     public void ArcherFortifiesAndCannotMove() {
         Unit archer = new UnitArcher(Player.RED);
-        World[0][0].setUnit(archer);
-        assertEquals(ARCHER, World[0][0].getUnit().getTypeString());
+        ((TileImpl) World[0][0]).setUnit(archer);
+        assertEquals(ARCHER, ((TileImpl) World[0][0]).getUnit().getTypeString());
         assertEquals(3, archer.getDefensiveStrength());
         assertEquals(2, archer.getAttackingStrength());
         assertEquals(1, archer.getMoveCount());
@@ -76,7 +76,7 @@ public class TestGammaCiv {
     @Test
     public void ArcherRemovesFortifyAndCanMove() {
         Unit archer = new UnitArcher(Player.RED);
-        World[0][0].setUnit(archer);
+        ((TileImpl) World[0][0]).setUnit(archer);
         Gamma.performUnitActionAt(World, p);
         Gamma.performUnitActionAt(World, p);
         assertEquals(3, archer.getDefensiveStrength());
