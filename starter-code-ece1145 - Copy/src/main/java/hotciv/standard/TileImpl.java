@@ -75,5 +75,12 @@ public class TileImpl implements Tile {
     public City returnCity(){
         return CityData;
     }
+    
+    public boolean equals(Object o) {
+        if (o == null) { return false; }
+        if (o.getClass() != TileImpl.class) { return false; }
+        TileImpl other = (TileImpl) o;
+        return position.equals(other.position) && type.equals(other.type);
+    }
 
 }
