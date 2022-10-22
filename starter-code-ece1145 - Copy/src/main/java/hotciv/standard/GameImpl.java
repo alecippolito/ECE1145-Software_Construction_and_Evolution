@@ -4,13 +4,9 @@ import java.lang.*;
 
 import hotciv.framework.*;
 
-import java.sql.Time;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static hotciv.framework.GameConstants.*;
-import static hotciv.framework.Player.*;
 
 /** Skeleton implementation of HotCiv.
  
@@ -61,7 +57,7 @@ public class GameImpl implements Game {
 
  
   public Tile getTileAt( Position p ) {
-    return World[p.getRow()][p.getColumn()];
+    return build.returnWorld()[p.getRow()][p.getColumn()];
   }
  
   public Unit getUnitAt( Position p ) {
@@ -173,38 +169,31 @@ public class GameImpl implements Game {
   public void performUnitActionAt( Position p ) {
     Unit unit = getUnitAt(p);
     if (unit != null && currentPlayerInTurn.equals(unit.getOwner())) {
-      actionStrategy.performUnitActionAt(World, p);
+      actionStrategy.performUnitActionAt(build.returnWorld(), p);
     }
   }
-
-
-  //define the World constraints HERE, not the interface file
-  private Tile[][] World;
-
 
   GameImpl(worldBuild buildMode)
   {
     this.build = buildMode;
-
-    World = build.createWorld();
   }
 
   public Tile[][] returnWorld()
   {
-    return World;
+    return build.returnWorld();
   }
 
   public void setTileTypeFromGame(Position p, String s)
   {
-    ((TileImpl) World[p.getRow()][p.getColumn()]).setTileType(s);
+    ((TileImpl) build.returnWorld()[p.getRow()][p.getColumn()]).setTileType(s);
   }
 
   public void setOwnerFromGame(Position pos, Player pl){
-    ((TileImpl) World[pos.getRow()][pos.getColumn()]).setOwner(pl);
+    ((TileImpl) build.returnWorld()[pos.getRow()][pos.getColumn()]).setOwner(pl);
   }
 
   public void AddCityFromGame(Position pos, Player owner, String unitFocus, String workFocus){
-    ((TileImpl) World[pos.getRow()][pos.getColumn()]).addCity(owner, unitFocus, workFocus);
+    ((TileImpl) build.returnWorld()[pos.getRow()][pos.getColumn()]).addCity(owner, unitFocus, workFocus);
 
     //Add the city to the list of positions with a city
     CityLocations.add(pos);

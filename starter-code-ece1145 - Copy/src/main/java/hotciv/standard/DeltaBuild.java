@@ -2,17 +2,16 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
-import hotciv.framework.*;
-
-import java.util.*;
-
 public class DeltaBuild implements worldBuild{
 
+
+    //hold the data for the 2D Tile array
+    Tile[][] theWorld;
 
     // A simple implementation to draw the map of DeltaCiv
 
     /** Define the world as the DeltaCiv layout */
-    public Tile[][] createWorld() {
+    DeltaBuild(){
         // Basically we use a 'data driven' approach - code the
         // layout in a simple semi-visual representation, and
         // convert it to the actual Game representation.
@@ -36,7 +35,7 @@ public class DeltaBuild implements worldBuild{
                         ".....ooooooooo..",
                 };
         // Conversion...
-        Tile[][] theWorld = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
+        theWorld = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
         String line;
         for ( int r = 0; r < GameConstants.WORLDSIZE; r++ ) {
             line = layout[r];
@@ -58,10 +57,10 @@ public class DeltaBuild implements worldBuild{
 
         //BLUE city at (4,5)
         ((TileImpl) theWorld[4][5]).addCity(Player.BLUE,null,null);
-
-        //return the world
-        return theWorld;
     }
 
+    public Tile[][] returnWorld(){
+        return theWorld;
+    }
 
 }

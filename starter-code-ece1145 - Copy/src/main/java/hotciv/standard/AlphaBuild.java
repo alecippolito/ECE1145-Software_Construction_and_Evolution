@@ -8,12 +8,14 @@ import static hotciv.framework.Player.RED;
 
 public class AlphaBuild implements worldBuild{
 
+    //Hold the data for the 2D Tile array
+    Tile[][] World;
 
     //create the world
-    public Tile[][] createWorld(){
+    AlphaBuild(){
 
         //Define the size of the World
-        Tile[][] World = new Tile[WORLDSIZE][WORLDSIZE];
+        World = new Tile[WORLDSIZE][WORLDSIZE];
 
         //give Tiles to every position in the world
         //for now: initialize to PLAINS
@@ -48,8 +50,9 @@ public class AlphaBuild implements worldBuild{
         //Blue city at 4,1
         ((TileImpl) World[4][1]).addCity(BLUE,null,null);
 
-        return World;
     }
 
-
+    public Tile[][] returnWorld() {
+        return World;
+    }
 }
