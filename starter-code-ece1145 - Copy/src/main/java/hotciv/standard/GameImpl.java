@@ -55,7 +55,7 @@ public class GameImpl implements Game {
 
  
   public Tile getTileAt( Position p ) {
-    return worldLayout.returnTiles()[p.getRow()][p.getColumn()];
+    return worldLayout.returnTiles().get(p);
   }
  
   public Unit getUnitAt( Position p ) {
@@ -176,18 +176,18 @@ public class GameImpl implements Game {
     this.worldLayout = buildMode;
   }
 
-  public Tile[][] returnWorld()
+  public HashMap<Position, Tile> returnWorld()
   {
     return worldLayout.returnTiles();
   }
 
   public void setTileTypeFromGame(Position p, String s)
   {
-    ((TileImpl) worldLayout.returnTiles()[p.getRow()][p.getColumn()]).setTileType(s);
+    ((TileImpl) worldLayout.returnTiles().get(p)).setTileType(s);
   }
 
-  public void setOwnerFromGame(Position pos, Player pl){
-    ((TileImpl) worldLayout.returnTiles()[pos.getRow()][pos.getColumn()]).setOwner(pl);
+  public void setOwnerFromGame(Position p, Player pl){
+    ((TileImpl) worldLayout.returnTiles().get(p)).setOwner(pl);
   }
 
   public void AddProductionEndOfRound(){

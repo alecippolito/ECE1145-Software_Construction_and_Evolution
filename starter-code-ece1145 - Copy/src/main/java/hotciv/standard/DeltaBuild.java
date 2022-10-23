@@ -8,7 +8,7 @@ public class DeltaBuild implements worldBuild{
 
 
     //hold the data for the 2D Tile array
-    private Tile[][] theWorld;
+    private HashMap<Position,Tile> theWorld;
 
     //hold the data for the cities
     private HashMap<Position,City> Cities;
@@ -43,7 +43,7 @@ public class DeltaBuild implements worldBuild{
                         ".....ooooooooo..",
                 };
         // Conversion...
-        theWorld = new Tile[GameConstants.WORLDSIZE][GameConstants.WORLDSIZE];
+        theWorld = new HashMap<>();
         String line;
         for ( int r = 0; r < GameConstants.WORLDSIZE; r++ ) {
             line = layout[r];
@@ -55,7 +55,8 @@ public class DeltaBuild implements worldBuild{
                 if ( tileChar == 'M' ) { type = GameConstants.MOUNTAINS; }
                 if ( tileChar == 'f' ) { type = GameConstants.FOREST; }
                 if ( tileChar == 'h' ) { type = GameConstants.HILLS; }
-                theWorld[r][c] = new TileImpl(type);
+                Position p = new Position(r,c);
+                theWorld.put( p, new TileImpl(type));
             }
         }
 
@@ -67,7 +68,7 @@ public class DeltaBuild implements worldBuild{
         Cities.put(new Position(4,5) , new CityImpl(Player.BLUE));
     }
 
-    public Tile[][] returnTiles(){
+    public HashMap<Position, Tile> returnTiles(){
         return theWorld;
     }
 

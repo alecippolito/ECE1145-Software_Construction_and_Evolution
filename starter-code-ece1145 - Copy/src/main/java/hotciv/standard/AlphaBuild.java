@@ -11,7 +11,7 @@ import static hotciv.framework.Player.RED;
 public class AlphaBuild implements worldBuild{
 
     //Hold the data for the 2D Tile array
-    private Tile[][] World;
+    private HashMap<Position,Tile> World;
 
     //Hold the data for the Cities
     private HashMap<Position,City> Cities;
@@ -22,18 +22,15 @@ public class AlphaBuild implements worldBuild{
         Cities = new HashMap<>();
 
         //Define the size of the World
-        World = new Tile[WORLDSIZE][WORLDSIZE];
+        World = new HashMap<>();
 
         //give Tiles to every position in the world
         //for now: initialize to PLAINS
         //loop through the World and initialize the tiles
-        for (int i = 0; i < WORLDSIZE; i++) {
-            for (int j = 0; j < WORLDSIZE; j++) {
-
+        for (int r = 0; r < WORLDSIZE; r++) {
+            for (int c = 0; c < WORLDSIZE; c++) {
                 //have to define a new Tile pointer for each location to not have issues
-                Tile tempTile = new TileImpl(PLAINS);
-
-                World[i][j] = tempTile;
+                World.put(new Position(r,c),new TileImpl(PLAINS));
             }
         }
 
@@ -41,13 +38,13 @@ public class AlphaBuild implements worldBuild{
         //initialize certain points to be different Tiles
 
         //Mountain at (2,2)
-        World[2][2] = new TileImpl(MOUNTAINS);
+        World.put(new Position(2,2),new TileImpl(MOUNTAINS));
 
         //Ocean at (1,0)
-        World[1][0] = new TileImpl(OCEANS);
+        World.put(new Position(1,0),new TileImpl(OCEANS));
 
         //Hills at (0,1)
-        World[0][1] = new TileImpl(HILLS);
+        World.put(new Position(0,1),new TileImpl(HILLS));
 
 
         //initialize city locations
@@ -58,7 +55,7 @@ public class AlphaBuild implements worldBuild{
         Cities.put(new Position(4,1) , new CityImpl(Player.BLUE));
     }
 
-    public Tile[][] returnTiles() {
+    public HashMap returnTiles() {
         return World;
     }
 
