@@ -151,8 +151,8 @@ public class TestAlphaCiv {
 
     //tiles and ownership should be initialized in this iteration's constructor for the game class
     Position p1 = new Position(1,1);
-    assertThat(((TileImpl) game.getTileAt(p1)).hasCity(), is(true));
-    assertThat(((TileImpl) game.getTileAt(p1)).returnCity().getOwner(), is(Player.RED));
+    assertThat(((GameImpl) game).cityExists(p1), is(true));
+    assertThat(game.getCityAt(p1).getOwner(), is(Player.RED));
   }
 
   @Test
@@ -160,8 +160,8 @@ public class TestAlphaCiv {
 
     //tiles and ownership should be initialized in this iteration's constructor for the game class
     Position p1 = new Position(4,1);
-    assertThat(((TileImpl) game.getTileAt(p1)).hasCity(), is(true));
-    assertThat(((TileImpl) game.getTileAt(p1)).returnCity().getOwner(), is(Player.BLUE));
+    assertThat(((GameImpl) game).cityExists(p1), is(true));
+    assertThat(game.getCityAt(p1).getOwner(), is(Player.BLUE));
   }
 
   @Test

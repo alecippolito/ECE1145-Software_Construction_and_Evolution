@@ -5,6 +5,7 @@ import java.lang.*;
 import hotciv.framework.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static hotciv.framework.GameConstants.*;
 
@@ -45,11 +46,8 @@ public class GameImpl implements Game {
   int blueSize = 1;
   int redSize = 1;
 
-  //List containing every Location with a city
-  ArrayList<Position> CityLocations = new ArrayList<Position>();
-
   //Store the world building strategy
-  worldBuild build;
+  worldBuild worldLayout;
 
   //add an ActionStategy variable
   private ActionStrategy actionStrategy;
@@ -57,7 +55,7 @@ public class GameImpl implements Game {
 
  
   public Tile getTileAt( Position p ) {
-    return build.returnWorld()[p.getRow()][p.getColumn()];
+    return worldLayout.returnTiles()[p.getRow()][p.getColumn()];
   }
  
   public Unit getUnitAt( Position p ) {
@@ -71,7 +69,7 @@ public class GameImpl implements Game {
     ((TileImpl) getTileAt(p)).setUnit(null);
   }
  
-  public City getCityAt( Position p ) { return ((TileImpl) getTileAt(p)).returnCity();}
+  public City getCityAt( Position p ) { return worldLayout.returnCities().get(p);}
  
   public Player getPlayerInTurn() {
     if( currentPlayer == null){
@@ -169,66 +167,40 @@ public class GameImpl implements Game {
   public void performUnitActionAt( Position p ) {
     Unit unit = getUnitAt(p);
     if (unit != null && currentPlayerInTurn.equals(unit.getOwner())) {
-      actionStrategy.performUnitActionAt(build.returnWorld(), p);
+      actionStrategy.performUnitActionAt(worldLayout.returnTiles(), worldLayout.returnCities(),p);
     }
   }
 
   GameImpl(worldBuild buildMode)
   {
-    this.build = buildMode;
+    this.worldLayout = buildMode;
   }
 
   public Tile[][] returnWorld()
   {
-    return build.returnWorld();
+    return worldLayout.returnTiles();
   }
 
   public void setTileTypeFromGame(Position p, String s)
   {
-    ((TileImpl) build.returnWorld()[p.getRow()][p.getColumn()]).setTileType(s);
+    ((TileImpl) worldLayout.returnTiles()[p.getRow()][p.getColumn()]).setTileType(s);
   }
 
   public void setOwnerFromGame(Position pos, Player pl){
-    ((TileImpl) build.returnWorld()[pos.getRow()][pos.getColumn()]).setOwner(pl);
-  }
-
-  public void AddCityFromGame(Position pos, Player owner, String unitFocus, String workFocus){
-    ((TileImpl) build.returnWorld()[pos.getRow()][pos.getColumn()]).addCity(owner, unitFocus, workFocus);
-
-    //Add the city to the list of positions with a city
-    CityLocations.add(pos);
+    ((TileImpl) worldLayout.returnTiles()[pos.getRow()][pos.getColumn()]).setOwner(pl);
   }
 
   public void AddProductionEndOfRound(){
 
     //Loop through list of Positions with a city and add 6 production to each
-    for (int i = 0; i < CityLocations.size(); i++){
-
-      ((CityImpl) getCityAt(CityLocations.get(i))).addProduction(6);
+    for (Position p: worldLayout.returnCities().keySet()){
+      ((CityImpl) worldLayout.returnCities().get(p)).addProduction(6);
     }
-  }
-
-  public void setWorkFocusFromGame(Position p, String s){
-
-    if (!((TileImpl) getTileAt(p)).hasCity()){
-      throw new RuntimeException("Entered position does not have a city");
-    }
-
-    ((CityImpl) getCityAt(p)).setWorkforceFocus(s);
-
-  }
-
-  public void setUnitFocusFromGame(Position p, String s){
-    if (!((TileImpl) getTileAt(p)).hasCity()){
-      throw new RuntimeException("Entered position does not have a city");
-    }
-
-    ((CityImpl) getCityAt(p)).setUnitFocus(s);
   }
 
   public void createNewUnitFromCity(Position p){
 
-    if (!((TileImpl) getTileAt(p)).hasCity()){
+    if (!worldLayout.returnCities().containsKey(p)){
       throw new RuntimeException("Entered position does not have a city");
     }
 
@@ -291,4 +263,20 @@ public class GameImpl implements Game {
 
     //If all units are occupied, nothing is placed
   }
+
+  /**
+   * CHECK TO SEE IF A CITY EXISTS AT A CERTAIN LOCATION
+   */
+  public boolean cityExists(Position p){
+    return worldLayout.returnCities().containsKey(p);
+  }
+
+  /**
+   * RETURN THE WHOLE LIST OF CITIES AS A HASH MAP
+   * @return the hash map of all cities
+   */
+  public HashMap<Position,City> returnCities(){
+    return worldLayout.returnCities();
+  }
+
 }

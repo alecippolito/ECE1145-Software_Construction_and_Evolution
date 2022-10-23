@@ -26,7 +26,7 @@ public class CityImpl implements City {
     /**
      * Constructor: Define the variables when you first call it
      */
-    CityImpl(Player p, String UnitFocus, String WorkFocus){
+    public CityImpl(Player p, String UnitFocus, String WorkFocus){
         setOwner(p);
         setUnitFocus(UnitFocus);
         setWorkforceFocus(WorkFocus);

@@ -27,16 +27,16 @@ public class TestDeltaCiv {
     public void testRedOwnCityAtR8C12(){
         //tiles and ownership should be initialized in this iteration's constructor for the game class
         Position p1 = new Position(8,12);
-        assertThat(((TileImpl) game.getTileAt(p1)).hasCity(), is(true));
-        assertThat(((TileImpl) game.getTileAt(p1)).returnCity().getOwner(), is(Player.RED));
+        assertThat(((GameImpl) game).cityExists(p1), is(true));
+        assertThat(game.getCityAt(p1).getOwner(), is(Player.RED));
     }
 
     @Test
     public void testBlueOwnCityAtR4C5(){
         //tiles and ownership should be initialized in this iteration's constructor for the game class
         Position p1 = new Position(4,5);
-        assertThat(((TileImpl) game.getTileAt(p1)).hasCity(), is(true));
-        assertThat(((TileImpl) game.getTileAt(p1)).returnCity().getOwner(), is(Player.BLUE));
+        assertThat(((GameImpl) game).cityExists(p1), is(true));
+        assertThat(game.getCityAt(p1).getOwner(), is(Player.BLUE));
     }
 
 

@@ -11,9 +11,6 @@ public class TileImpl implements Tile {
     public Player TileOwner = null;
     public Unit unit;
 
-    //own a city inside a tile
-    public City CityData;
-
     public String getTypeString() {
         return type;
     }
@@ -39,30 +36,11 @@ public class TileImpl implements Tile {
     public void setOwner(Player p)
     {
         TileOwner = p;
-
-        if (CityData.getOwner() == null){
-            ((CityImpl) CityData).setOwner(p);
-        }
     }
 
     public Player getOwner()
     {
         return TileOwner;
-    }
-
-    public boolean hasCity()
-    {
-        return Objects.nonNull(CityData);
-    }
-
-    public void addCity(Player p, String u, String w)
-    {
-        CityData = new CityImpl(p,u,w);
-    }
-
-    public void removeCity()
-    {
-        CityData = null;
     }
     
     public Unit getUnit() {
@@ -71,10 +49,6 @@ public class TileImpl implements Tile {
     
     public void setUnit(Unit unit) {
         this.unit = unit;
-    }
-
-    public City returnCity(){
-        return CityData;
     }
     
     public boolean equals(Object o) {

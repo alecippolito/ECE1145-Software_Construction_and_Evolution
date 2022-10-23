@@ -2,6 +2,8 @@ package hotciv.standard;
 
 import hotciv.framework.*;
 
+import java.util.HashMap;
+
 import static hotciv.framework.GameConstants.*;
 import static hotciv.framework.Player.BLUE;
 import static hotciv.framework.Player.RED;
@@ -9,10 +11,15 @@ import static hotciv.framework.Player.RED;
 public class AlphaBuild implements worldBuild{
 
     //Hold the data for the 2D Tile array
-    Tile[][] World;
+    private Tile[][] World;
+
+    //Hold the data for the Cities
+    private HashMap<Position,City> Cities;
 
     //create the world
     AlphaBuild(){
+
+        Cities = new HashMap<>();
 
         //Define the size of the World
         World = new Tile[WORLDSIZE][WORLDSIZE];
@@ -43,16 +50,19 @@ public class AlphaBuild implements worldBuild{
         World[0][1] = new TileImpl(HILLS);
 
 
-        //initialize city location
+        //initialize city locations
         //Red city at 1,1
-        ((TileImpl) World[1][1]).addCity(RED,LEGION,productionFocus);
+        Cities.put(new Position(1,1) , new CityImpl(Player.RED,LEGION,productionFocus));
 
         //Blue city at 4,1
-        ((TileImpl) World[4][1]).addCity(BLUE,null,null);
-
+        Cities.put(new Position(4,1) , new CityImpl(Player.BLUE));
     }
 
-    public Tile[][] returnWorld() {
+    public Tile[][] returnTiles() {
         return World;
+    }
+
+    public HashMap<Position,City> returnCities(){
+        return Cities;
     }
 }
