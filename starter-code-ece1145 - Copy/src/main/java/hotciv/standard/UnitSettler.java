@@ -6,7 +6,7 @@ import hotciv.framework.Player;
 public class UnitSettler extends UnitImpl {
 
     public UnitSettler(Player owner) {
-        super(GameConstants.SETTLER, owner, 1, 3, 0);
+        super(GameConstants.SETTLER, owner);
 
     }
 
