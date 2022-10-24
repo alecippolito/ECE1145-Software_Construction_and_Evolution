@@ -2,11 +2,11 @@ package hotciv.standard;
 import hotciv.framework.*;
 
 public abstract class UnitImpl implements Unit {
-    UnitDef unitDef;
+    UnitStats unitStat;
     Position position;
 
-    protected UnitImpl(String type, Player owner, int moveCount, int defense, int attack) {
-        unitDef = new UnitDef(type, owner, moveCount, defense, attack);
+    protected UnitImpl(String type, Player owner) {
+        unitStat = new UnitStats(type, owner);
     }
 
     public static Unit produceUnit(String type, Player owner) {
@@ -22,55 +22,69 @@ public abstract class UnitImpl implements Unit {
     }
 
     public String getTypeString() {
-        return unitDef.type;
+        return unitStat.type;
     }
 
     public Player getOwner() {
-        return unitDef.owner;
+        return unitStat.owner;
     }
 
     public int getMoveCount() {
-        return unitDef.moveCount;
+        return unitStat.moveCount;
     }
 
     public int getDefensiveStrength() {
-        return unitDef.defense;
+        return unitStat.defense;
     }
 
     public int getAttackingStrength() {
-        return unitDef.attack;
+        return unitStat.attack;
     }
 
     public void action() {}
 
-    public boolean checkMove() {return unitDef.checkMove();}
+    public boolean canMove() {return unitStat.canMove();}
 
-    public void moved() {unitDef.moved();}
+    public void moved() {
+        unitStat.moved();}
 
     public void setUnitOwner(Player o)
     {
-        unitDef.owner = o;
+        unitStat.owner = o;
     }
 
-    public void resetMove() {unitDef.resetMove();}
+    public void resetMove() {
+        unitStat.resetMove();}
 
-    public Unit getUnitDef() {
-        return unitDef;
+    public Unit getUnitStat() {
+        return unitStat;
     }
 
-    public class UnitDef implements Unit {
+    public class UnitStats implements Unit {
         protected String type;
         protected Player owner;
         protected int moveCount;
         protected int defense;
         protected int attack;
 
-        public UnitDef(String type, Player owner, int moveCount, int defense, int attack) {
+        public UnitStats(String type, Player owner) {
             this.type = type;
             this.owner = owner;
-            this.moveCount = moveCount;
-            this.defense = defense;
-            this.attack = attack;
+            if (type == GameConstants.ARCHER) {
+                this.moveCount = 1;
+                this.defense = 3;
+                this.attack = 2;
+            }
+            if (type == GameConstants.LEGION) {
+                this.moveCount = 1;
+                this.defense = 2;
+                this.attack = 4;
+            }
+            if (type == GameConstants.SETTLER){
+                this.moveCount = 1;
+                this.defense = 3;
+                this.attack = 0;
+            }
         }
 
         public String getTypeString() {
@@ -84,6 +98,8 @@ public abstract class UnitImpl implements Unit {
         public int getMoveCount() {
             return moveCount;
         }
+
+        public void setDefensiveStrength() {}
 
         public int getDefensiveStrength() {
             return defense;
@@ -100,13 +116,13 @@ public abstract class UnitImpl implements Unit {
 
         public void resetMove() {moveCount = 1;}
 
-        public Unit getUnitDef() {
+        public Unit getUnitStat() {
             return null;
         }
 
         public void action() {}
 
-        public boolean checkMove() {return moveCount > 0;}
+        public boolean canMove() {return moveCount > 0;}
 
         public void moved() {moveCount = 0;}
 
@@ -116,6 +132,6 @@ public abstract class UnitImpl implements Unit {
         if (o == null) { return false; }
         if (o.getClass() != TileImpl.class) { return false; }
         TileImpl other = (TileImpl) o;
-        return position.equals(other.position) && unitDef.type.equals(other.type);
+        return position.equals(other.position) && unitStat.type.equals(other.type);
     }
 }
