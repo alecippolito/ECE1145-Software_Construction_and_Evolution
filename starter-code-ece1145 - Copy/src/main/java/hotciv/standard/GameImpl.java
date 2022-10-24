@@ -131,25 +131,27 @@ public class GameImpl implements Game {
     Unit fUnit = getUnitAt(from);
     Unit tUnit = getUnitAt(to);
     Tile m = getTileAt(to);
+
     //Check if terrain can be moved over
-    if (m.getTypeString().equals(FOREST) || m.getTypeString().equals(HILLS) || m.getTypeString().equals(PLAINS)) {
-      //Check units if valid to control or move into
-      if (getUnitAt(from).getOwner() != currentPlayerInTurn)
-        return false;
-      else {
-        if (tUnit.getOwner() != currentPlayerInTurn) {
-          //Remove and replace unit if being attacked
-          removeUnitAt(to);
-          setUnitAt(to, fUnit);
-          removeUnitAt(from);
-          return true;
-        } else if (tUnit.getOwner() == currentPlayerInTurn) {
-          return false;
-        }
-        return true;
-      }
-    } else
+    if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
       return false;
+    //Check units if valid to control
+    if (fUnit.getOwner() != currentPlayerInTurn)
+      return false;
+    //Check units if valid to move into
+    if (tUnit.getOwner() == currentPlayerInTurn) {
+      return false;
+    } else if (tUnit.getOwner() != currentPlayerInTurn) {
+      //Remove and replace unit if being attacked
+      removeUnitAt(to);
+      setUnitAt(to, fUnit);
+      removeUnitAt(from);
+      return true;
+    }
+    //Complete movement if nothing else
+    setUnitAt(to, fUnit);
+    removeUnitAt(from);
+    return true;
   }
  
   public void endOfTurn() {
