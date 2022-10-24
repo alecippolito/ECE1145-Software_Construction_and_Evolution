@@ -66,7 +66,7 @@ public interface Unit {
 
   public void resetMove();
 
-  public Unit getUnitDef();
+  public Unit getUnitStat();
 
   public boolean canMove();
 
