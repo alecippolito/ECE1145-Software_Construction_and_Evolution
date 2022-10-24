@@ -9,7 +9,6 @@ public class UnitArcher extends UnitImpl {
     boolean checkMove;
     public UnitArcher(Player owner) {
         super(GameConstants.ARCHER, owner);
-
     }
 
     @Override
@@ -23,15 +22,15 @@ public class UnitArcher extends UnitImpl {
     }
 
     private void setFortify() {
-        unitDef.moveCount = 0;
-        unitDef.defense = unitDef.defense * 2;
+        unitStat.moveCount = 0;
+        unitStat.defense = unitStat.defense * 2;
         fortify = true;
     }
 
     private void removeFortify() {
         if (!checkMove)
-            unitDef.moveCount = 1;
-        unitDef.defense = unitDef.defense / 2;
+            unitStat.moveCount = 1;
+        unitStat.defense = unitStat.defense / 2;
         fortify = false;
     }
 
