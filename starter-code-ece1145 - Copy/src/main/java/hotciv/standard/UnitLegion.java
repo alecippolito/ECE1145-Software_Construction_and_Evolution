@@ -6,7 +6,7 @@ import hotciv.framework.Player;
 public class UnitLegion extends UnitImpl {
 
     public UnitLegion(Player owner) {
-        super(GameConstants.LEGION, owner, 1, 2, 4);
+        super(GameConstants.LEGION, owner);
 
     }
 
