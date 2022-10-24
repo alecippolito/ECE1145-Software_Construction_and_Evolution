@@ -6,7 +6,7 @@ import hotciv.framework.Player;
 public class UnitArcher extends UnitImpl {
 
     boolean fortify;
-    boolean checkMove;
+    boolean canMove;
     public UnitArcher(Player owner) {
         super(GameConstants.ARCHER, owner);
     }
@@ -28,7 +28,7 @@ public class UnitArcher extends UnitImpl {
     }
 
     private void removeFortify() {
-        if (!checkMove)
+        if (!canMove)
             unitStat.moveCount = 1;
         unitStat.defense = unitStat.defense / 2;
         fortify = false;
@@ -36,12 +36,12 @@ public class UnitArcher extends UnitImpl {
 
     public void moved() {
         super.moved();
-        checkMove = true;
+        canMove = true;
     }
 
     public void resetMove() {
         super.resetMove();
-        checkMove = false;
+        canMove = false;
     }
 
     @Override
