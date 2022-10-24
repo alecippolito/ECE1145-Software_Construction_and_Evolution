@@ -8,7 +8,7 @@ public class UnitArcher extends UnitImpl {
     boolean fortify;
     boolean checkMove;
     public UnitArcher(Player owner) {
-        super(GameConstants.ARCHER, owner, 1, 3, 2);
+        super(GameConstants.ARCHER, owner);
 
     }
 
