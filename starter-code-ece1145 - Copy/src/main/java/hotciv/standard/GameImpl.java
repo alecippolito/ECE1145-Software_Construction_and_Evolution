@@ -96,32 +96,60 @@ public class GameImpl implements Game {
     return null;
   }
   public Player getWinner() {
-    Player winner= Player.RED;
-    // TODO: implement algorithm to determine winner
-    if (getAge() == -3000){
+    Player winner = null;
+    if (worldLayout.getT().equals("Beta")) {
+      HashMap<Position,City> Cities = worldLayout.returnCities();
+      for (City city : Cities.values())
+      {
+        if(winner==null)
+        {
+          winner = city.getOwner();
+        }
+        else if(winner == city.getOwner())
+        {
+          continue;
+        }
+        else
+        {
+          return null;
+        }
+      }
       return winner;
+
+    } else { // DEFAULT WINNER (FROM ALPHA AND ALL OTHERS EXCEPT BETA)
+      if (getAge() == -3000) {
+        return Player.RED;
+      }
     }
-    return null; }
+      return null;
+    }
+
 
   public int getAge() {
-    if(endOfRound() == true){
-      // worldAge varies increments after every round
-      if (worldAge < -100){
+    if (worldLayout.getT().equals("Beta")) {
+      if (endOfRound() == true) {
+        // worldAge varies increments after every round
+        if (worldAge < -100) {
+          worldAge += 100;
+        } else if (worldAge < -1) {
+          worldAge += 99;
+        } else if (worldAge == -1) {
+          worldAge += 2;
+        } else if (worldAge == 1) {
+          worldAge += 49;
+        } else if (worldAge < 1750) {
+          worldAge += 50;
+        } else if (worldAge < 1900) {
+          worldAge += 25;
+        } else if (worldAge < 1970) {
+          worldAge += 5;
+        } else {
+          worldAge += 1;
+        }
+      }
+    } else{ // DEFAULT WINNER (FROM ALPHA AND ALL OTHERS EXCEPT BETA)
+      if (endOfRound() == true){
         worldAge += 100;
-      } else if (worldAge < -1){
-        worldAge += 99;
-      } else if (worldAge == -1 ) {
-        worldAge += 2;
-      } else if (worldAge == 1){
-        worldAge += 49;
-      } else if (worldAge < 1750){
-        worldAge += 50;
-      } else if (worldAge < 1900){
-        worldAge += 25;
-      } else if (worldAge < 1970){
-        worldAge += 5;
-      } else {
-        worldAge += 1;
       }
     }
     return worldAge;

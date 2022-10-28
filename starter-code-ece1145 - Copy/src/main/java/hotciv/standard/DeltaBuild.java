@@ -13,6 +13,8 @@ public class DeltaBuild implements worldBuild{
     //hold the data for the cities
     private HashMap<Position,City> Cities;
 
+    private String t = "Delta";
+
     // A simple implementation to draw the map of DeltaCiv
 
     /** Define the world as the DeltaCiv layout */
@@ -75,5 +77,7 @@ public class DeltaBuild implements worldBuild{
     public HashMap<Position,City> returnCities(){
         return Cities;
     }
+
+    public String getT(){return t;}
 
 }

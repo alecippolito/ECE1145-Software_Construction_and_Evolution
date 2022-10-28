@@ -1,5 +1,6 @@
 package hotciv.standard;
 
+import hotciv.alternative.ActionStrategyGamma;
 import hotciv.framework.*;
 
 import org.junit.*;
@@ -14,14 +15,18 @@ public class TestBetaCiv {
     private Game game;
 
     @Before
-    public void setUp() {
-        game = new GameImpl(new AlphaBuild());
+    public void setUp(){
+        game = new GameImpl(new BetaBuild());
     }
 
     // FRS p. 455 states that 'Red is the first player to take a turn'.
     @Test
-    public void winnerIsFirstToConquerAllCities() {
-        // implement
+    public void blueIsFirstToConquerAllCities() {
+        // fill out test
+    }
+
+    public void redIsFirstToConquerAllCities() {
+        // fill out test
     }
 
     @Test
