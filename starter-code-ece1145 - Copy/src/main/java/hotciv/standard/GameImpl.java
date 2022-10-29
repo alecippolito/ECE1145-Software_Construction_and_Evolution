@@ -49,8 +49,11 @@ public class GameImpl implements Game {
   //Store the world building strategy
   worldBuild worldLayout;
 
-  //add an ActionStategy variable
+  //add strategy variables
   private ActionStrategy actionStrategy;
+  private AttackStrategy attackStrategy;
+  private WinnerStrategy winnerStrategy;
+  private HashMap<Player, Integer> winHashMap;
 
 
  
@@ -156,9 +159,21 @@ public class GameImpl implements Game {
   }
  
   public boolean moveUnit( Position from, Position to ) {
-    Unit fUnit = getUnitAt(from);
+   Unit fUnit = getUnitAt(from);
     Unit tUnit = getUnitAt(to);
+    Unit defendUnit = getUnitAt(to);
+    Unit attackUnit = getUnitAt(from);
     Tile m = getTileAt(to);
+
+    int attackerAdjacentUnits = 0;
+    int attackerTerrainFactor = 1;
+    int defenderAdjacentUnits = 0;
+    int defenderTerrainFactor = 1;
+
+    attackerAdjacentUnits = getNumberOfAdjacentUnits(from, attackUnit.getOwner());
+    defenderAdjacentUnits = getNumberOfAdjacentUnits(to, defendUnit.getOwner());
+    attackerTerrainFactor = getTerrainFactor(from);
+    defenderTerrainFactor = getTerrainFactor(to);
 
     //Check if terrain can be moved over
     if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
@@ -170,11 +185,22 @@ public class GameImpl implements Game {
     if (tUnit.getOwner() == currentPlayerInTurn) {
       return false;
     } else if (tUnit.getOwner() != currentPlayerInTurn) {
-      //Remove and replace unit if being attacked
-      removeUnitAt(to);
-      setUnitAt(to, fUnit);
-      removeUnitAt(from);
-      return true;
+      // Unit conducts attack
+        if (attackStrategy.attack(attackUnit, defendUnit, attackerAdjacentUnits, attackerTerrainFactor,
+                defenderAdjacentUnits, defenderTerrainFactor)) {
+          if (getCityAt(to) != null) {
+            getCityAt(to).setOwner(fUnit.getOwner());
+          }
+          setUnitAt(to, fUnit);
+          removeUnitAt(from);
+          fUnit.canMove();
+          winnerStrategy.countAttack(winHashMap, attackUnit.getOwner());
+          return true;
+        }
+        // Unit fails attack
+        else {
+          removeUnitAt(from);
+        }
     }
     //Complete movement if nothing else
     setUnitAt(to, fUnit);
@@ -190,6 +216,62 @@ public class GameImpl implements Game {
     if(turnNumber % 2 != 0 || turnNumber == 0){
       return false;
     } return true;
+  }
+ 
+ private int getNumberOfAdjacentUnits(Position p, Player player) {
+
+    int x = p.getRow();
+    int y = p.getColumn();
+    int numberOfAdjacentUnits = 0;
+
+    if (getUnitAt(new Position(x, Math.min(GameConstants.WORLDSIZE-1, y+1))) != null
+            && getUnitAt(new Position(x, Math.min(GameConstants.WORLDSIZE-1, y+1))).getOwner() == player) {
+      numberOfAdjacentUnits++;
+    }
+    if (getUnitAt(new Position(Math.min(GameConstants.WORLDSIZE-1, x+1), Math.min(GameConstants.WORLDSIZE-1, y+1))) != null
+            && getUnitAt(new Position(Math.min(GameConstants.WORLDSIZE-1, x+1), Math.min(GameConstants.WORLDSIZE-1, y+1))).getOwner() == player) {
+      numberOfAdjacentUnits++;
+    }
+    if (getUnitAt(new Position(Math.min(GameConstants.WORLDSIZE-1, x+1), y)) != null
+            && getUnitAt(new Position(Math.min(GameConstants.WORLDSIZE-1, x+1), y)).getOwner() == player) {
+      numberOfAdjacentUnits++;
+    }
+    if (getUnitAt(new Position(Math.min(GameConstants.WORLDSIZE-1, x+1), Math.max(GameConstants.WORLDSIZE-1, y-1))) != null
+            && getUnitAt(new Position(Math.min(GameConstants.WORLDSIZE-1, x+1), Math.max(GameConstants.WORLDSIZE-1, y-1))).getOwner() == player) {
+      numberOfAdjacentUnits++;
+    }
+    if (getUnitAt(new Position(x, Math.max(GameConstants.WORLDSIZE-1, y-1))) != null
+            && getUnitAt(new Position(x, Math.max(GameConstants.WORLDSIZE-1, y-1))).getOwner() == player) {
+      numberOfAdjacentUnits++;
+    }
+    if (getUnitAt(new Position(Math.max(GameConstants.WORLDSIZE-1, x-1), Math.max(GameConstants.WORLDSIZE-1, y-1))) != null
+            && getUnitAt(new Position(Math.max(GameConstants.WORLDSIZE-1, x-1), Math.max(GameConstants.WORLDSIZE-1, y-1))).getOwner() == player) {
+      numberOfAdjacentUnits++;
+    }
+    if (getUnitAt(new Position(Math.max(GameConstants.WORLDSIZE-1, x-1), y)) != null
+            && getUnitAt(new Position(Math.max(GameConstants.WORLDSIZE-1, x-1), y)).getOwner() == player) {
+      numberOfAdjacentUnits++;
+    }
+    if (getUnitAt(new Position(Math.max(GameConstants.WORLDSIZE-1, x-1), Math.min(GameConstants.WORLDSIZE-1, y+1))) != null
+            && getUnitAt(new Position(Math.max(GameConstants.WORLDSIZE-1, x-1), Math.min(GameConstants.WORLDSIZE-1, y+1))).getOwner() == player) {
+      numberOfAdjacentUnits++;
+    }
+
+    return numberOfAdjacentUnits;
+  }
+
+  private int getTerrainFactor(Position p) {
+    String terrain = getTileAt(p).getTypeString();
+
+    if (getCityAt(p) != null){
+      return 3;
+    }
+    else if(terrain.equals(GameConstants.FOREST) || terrain.equals(GameConstants.HILLS)) {
+      return 2;
+    }
+    else {
+      return 1;
+    }
   }
  
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
