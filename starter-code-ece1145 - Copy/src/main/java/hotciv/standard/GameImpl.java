@@ -68,6 +68,7 @@ public class GameImpl implements Game {
         this.actionStrategy = factory.createActionStrategy();
         this.attackStrategy = factory.createAttackStrategy();
         this.winnerStrategy = factory.createWinnerStrategy();
+        winHashMap = new HashMap<>();
     }
  
   public Tile getTileAt( Position p ) {
