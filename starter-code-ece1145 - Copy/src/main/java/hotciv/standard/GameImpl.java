@@ -47,7 +47,10 @@ public class GameImpl implements Game {
   int redSize = 1;
 
   //Store the world building strategy
-  worldBuild worldLayout;
+  private worldBuild worldLayout;
+
+  //hold the factory class here
+  private GameFactory factory;
 
   //add strategy variables
   private ActionStrategy actionStrategy;
@@ -55,7 +58,17 @@ public class GameImpl implements Game {
   private WinnerStrategy winnerStrategy;
   private HashMap<Player, Integer> winHashMap;
 
+    /**
+     * Constructor
+     */
+    GameImpl(GameFactory factory){
+        this.factory = factory;
 
+        this.worldLayout = factory.createWorldBuild();
+        this.actionStrategy = factory.createActionStrategy();
+        this.attackStrategy = factory.createAttackStrategy();
+        this.winnerStrategy = factory.createWinnerStrategy();
+    }
  
   public Tile getTileAt( Position p ) {
     return worldLayout.returnTiles().get(p);
@@ -159,11 +172,16 @@ public class GameImpl implements Game {
   }
  
   public boolean moveUnit( Position from, Position to ) {
-   Unit fUnit = getUnitAt(from);
+
+      //Check if terrain can be moved over
+      Tile m = getTileAt(to);
+      if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
+          return false;
+
+    Unit fUnit = getUnitAt(from);
     Unit tUnit = getUnitAt(to);
     Unit defendUnit = getUnitAt(to);
     Unit attackUnit = getUnitAt(from);
-    Tile m = getTileAt(to);
 
     int attackerAdjacentUnits = 0;
     int attackerTerrainFactor = 1;
@@ -175,9 +193,7 @@ public class GameImpl implements Game {
     attackerTerrainFactor = getTerrainFactor(from);
     defenderTerrainFactor = getTerrainFactor(to);
 
-    //Check if terrain can be moved over
-    if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
-      return false;
+
     //Check units if valid to control
     if (fUnit.getOwner() != currentPlayerInTurn)
       return false;
@@ -281,11 +297,6 @@ public class GameImpl implements Game {
     if (unit != null && currentPlayerInTurn.equals(unit.getOwner())) {
       actionStrategy.performUnitActionAt(worldLayout.returnTiles(), worldLayout.returnCities(),p);
     }
-  }
-
-  GameImpl(worldBuild buildMode)
-  {
-    this.worldLayout = buildMode;
   }
 
   public HashMap<Position, Tile> returnWorld()

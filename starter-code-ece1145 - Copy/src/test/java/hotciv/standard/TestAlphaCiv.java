@@ -1,5 +1,8 @@
 package hotciv.standard;
 
+import hotciv.alternative.AlphaBuild;
+import hotciv.alternative.AlphaFactory;
+import hotciv.alternative.EpsilonFactory;
 import hotciv.framework.*;
 
 import org.junit.*;
@@ -7,8 +10,6 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import static hotciv.framework.GameConstants.*;
-import static hotciv.framework.Player.*;
-import java.util.*;
 
 
 /** Skeleton class for AlphaCiv test cases
@@ -45,7 +46,7 @@ public class TestAlphaCiv {
   /** Fixture for alphaciv testing. */
   @Before
   public void setUp() {
-    game = new GameImpl(new AlphaBuild());
+    game = new GameImpl(new AlphaFactory());
   }
 
   // FRS p. 455 states that 'Red is the first player to take a turn'.
@@ -62,7 +63,7 @@ public class TestAlphaCiv {
     }
   }
   @Test
-  public void shouldStartAgeAtNegatve4000(){
+  public void shouldStartAgeAtNegative4000(){
     assertThat(game, is(notNullValue()));
     assertThat(game.getAge(), is(-4000));
   }

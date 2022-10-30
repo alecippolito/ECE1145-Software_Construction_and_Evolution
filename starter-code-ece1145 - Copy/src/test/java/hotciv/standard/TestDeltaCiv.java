@@ -1,5 +1,7 @@
 package hotciv.standard;
 
+import hotciv.alternative.DeltaBuild;
+import hotciv.alternative.DeltaFactory;
 import hotciv.framework.*;
 
 import org.junit.*;
@@ -7,8 +9,6 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import static hotciv.framework.GameConstants.*;
-import static hotciv.framework.Player.*;
-import java.util.*;
 
 /**
  * TEST DELTA CIV
@@ -19,7 +19,7 @@ public class TestDeltaCiv {
 
     @Before
     public void setUp(){
-        game = new GameImpl(new DeltaBuild());
+        game = new GameImpl(new DeltaFactory());
     }
 
 

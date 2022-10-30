@@ -35,7 +35,7 @@ public class CityImpl implements City {
     /**
      * Another constructor: Only containing the owner
      */
-    CityImpl(Player p){
+    public CityImpl(Player p){
         setOwner(p);
     }
 

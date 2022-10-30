@@ -1,6 +1,8 @@
-package hotciv.standard;
+package hotciv.alternative;
 
 import hotciv.framework.*;
+import hotciv.standard.CityImpl;
+import hotciv.standard.TileImpl;
 
 import java.util.HashMap;
 

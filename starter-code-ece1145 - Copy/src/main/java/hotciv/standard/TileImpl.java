@@ -16,7 +16,7 @@ public class TileImpl implements Tile {
     }
 
     //constructor: set the Tile type
-    TileImpl(String s){
+    public TileImpl(String s){
         type = s;
     }
 

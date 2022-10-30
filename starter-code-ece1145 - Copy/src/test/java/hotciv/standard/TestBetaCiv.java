@@ -1,22 +1,19 @@
 package hotciv.standard;
 
-import hotciv.alternative.ActionStrategyGamma;
+import hotciv.alternative.BetaBuild;
+import hotciv.alternative.BetaFactory;
 import hotciv.framework.*;
 
 import org.junit.*;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
-import static hotciv.framework.GameConstants.*;
-import static hotciv.framework.Player.*;
-import java.util.*;
-
 public class TestBetaCiv {
     private Game game;
 
     @Before
     public void setUp(){
-        game = new GameImpl(new BetaBuild());
+        game = new GameImpl(new BetaFactory());
     }
 
     // FRS p. 455 states that 'Red is the first player to take a turn'.
