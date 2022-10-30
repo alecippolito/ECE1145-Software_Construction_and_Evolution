@@ -31,6 +31,11 @@ package hotciv.framework;
 
  */
 public interface City {
+  
+ /** set the owner of this city.
+   */
+  public void setOwner(Player p);
+
   /** return the owner of this city.
    * @return the player that controls this city.
    */
