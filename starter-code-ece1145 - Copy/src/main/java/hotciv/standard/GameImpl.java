@@ -41,7 +41,6 @@ public class GameImpl implements Game {
 
   int numPlayers = 2;
   Player currentPlayer = null;
-  int worldAge = -4000;
   int turnNumber = 0;
   int blueSize = 1;
   int redSize = 1;
@@ -56,6 +55,8 @@ public class GameImpl implements Game {
   private ActionStrategy actionStrategy;
   private AttackStrategy attackStrategy;
   private WinnerStrategy winnerStrategy;
+
+  private AgingStrategy agingStrategy;
   private HashMap<Player, Integer> winHashMap = new HashMap<Player, Integer>();
 
     /**
@@ -68,6 +69,7 @@ public class GameImpl implements Game {
         this.actionStrategy = factory.createActionStrategy();
         this.attackStrategy = factory.createAttackStrategy();
         this.winnerStrategy = factory.createWinnerStrategy();
+        this.agingStrategy = factory.createAgingStrategy();
         winHashMap = new HashMap<>();
     }
  
@@ -143,33 +145,7 @@ public class GameImpl implements Game {
 
 
   public int getAge() {
-    if (worldLayout.getT().equals("Beta")) {
-      if (endOfRound() == true) {
-        // worldAge varies increments after every round
-        if (worldAge < -100) {
-          worldAge += 100;
-        } else if (worldAge < -1) {
-          worldAge += 99;
-        } else if (worldAge == -1) {
-          worldAge += 2;
-        } else if (worldAge == 1) {
-          worldAge += 49;
-        } else if (worldAge < 1750) {
-          worldAge += 50;
-        } else if (worldAge < 1900) {
-          worldAge += 25;
-        } else if (worldAge < 1970) {
-          worldAge += 5;
-        } else {
-          worldAge += 1;
-        }
-      }
-    } else{ // DEFAULT WINNER (FROM ALPHA AND ALL OTHERS EXCEPT BETA)
-      if (endOfRound() == true){
-        worldAge += 100;
-      }
-    }
-    return worldAge;
+      return agingStrategy.getAge(endOfRound());
   }
  
   public boolean moveUnit( Position from, Position to ) {

@@ -13,4 +13,7 @@ public interface GameFactory {
 
     //winner strategy
     public WinnerStrategy createWinnerStrategy();
+
+    //aging strategy
+    public AgingStrategy createAgingStrategy();
 }

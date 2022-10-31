@@ -29,7 +29,7 @@ public class TestZetaCiv {
     @Before
     public void setUp() {
 
-        game = new GameImpl(new BetaFactory());
+        game = new GameImpl(new ZetaFactory());
         World = new HashMap<>();
         for(int i = 0; i < GameConstants.WORLDSIZE; i++) {
             for( int j = 0; j < GameConstants.WORLDSIZE; j++) {

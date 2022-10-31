@@ -15,4 +15,8 @@ public class DeltaFactory implements GameFactory {
     public WinnerStrategy createWinnerStrategy() {
         return null;
     }
+
+    public AgingStrategy createAgingStrategy() {
+        return null;
+    }
 }

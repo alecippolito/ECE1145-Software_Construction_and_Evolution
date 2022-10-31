@@ -2,21 +2,21 @@ package hotciv.alternative;
 
 import hotciv.framework.*;
 
-public class GammaFactory implements GameFactory {
+public class ZetaFactory implements GameFactory {
     public worldBuild createWorldBuild() {
         return new AlphaBuild();
     }
     public ActionStrategy createActionStrategy() {
-        return new ActionStrategyGamma();
+        return null;
     }
     public AttackStrategy createAttackStrategy() {
         return null;
     }
     public WinnerStrategy createWinnerStrategy() {
-        return null;
+        return new WinnerStrategyZeta();
     }
 
     public AgingStrategy createAgingStrategy() {
-        return null;
+        return new AgingStrategyBeta();
     }
 }

@@ -3,8 +3,14 @@ package hotciv.alternative;
 import hotciv.framework.AgingStrategy;
 
 public class AgingStrategyBeta implements AgingStrategy {
-    @Override
-    public int getAge(boolean endOfRound,int worldAge) {
+
+    int worldAge;
+
+    AgingStrategyBeta(){
+        worldAge = -4000;
+    }
+
+    public int getAge(boolean endOfRound) {
         if (endOfRound == true) {
             // worldAge varies increments after every round
             if (worldAge < -100) {
