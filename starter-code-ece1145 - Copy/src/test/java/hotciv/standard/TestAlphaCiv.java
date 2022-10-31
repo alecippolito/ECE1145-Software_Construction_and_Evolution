@@ -179,7 +179,7 @@ public class TestAlphaCiv {
   public void RedShouldNotMoveBlue() {
     Position p1 = new Position(3, 2);
     Position p2 = new Position(3, 3);
-
+ 
     ((GameImpl) game).setUnitAt(p1, new UnitLegion(Player.BLUE));
     ((GameImpl) game).setUnitAt(p2, new UnitSettler(Player.RED));
     assertThat(game.moveUnit(p1, p2), is(false));
