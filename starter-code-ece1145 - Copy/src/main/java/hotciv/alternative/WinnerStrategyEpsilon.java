@@ -19,6 +19,6 @@ public class WinnerStrategyEpsilon implements WinnerStrategy {
     }
 
     public void countAttack(HashMap<Player, Integer> attackCounts, Player player) {
-        attackCounts.put(player,attackCounts.get(player)+1);
+        attackCounts.put(player, i+1);
     }
 }
