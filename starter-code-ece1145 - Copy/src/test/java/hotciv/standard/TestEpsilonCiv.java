@@ -138,13 +138,13 @@ public class TestEpsilonCiv {
         ((GameImpl) game).setTileTypeFromGame(p2, HILLS);
         ((GameImpl) game).setTileTypeFromGame(p3, FOREST);
         // plains have multiplier 1
-        assertThat(game.getTerrainFactor(p1), is(1));
+        assertThat(((GameImpl) game).getTerrainFactor(p1), is(1));
         // hills have multiplier 2
-        assertThat(game.getTerrainFactor(p2), is(2));
+        assertThat(((GameImpl) game).getTerrainFactor(p2), is(2));
         // forest have multiplier 2
-        assertThat(game.getTerrainFactor(p3), is(2));
+        assertThat(((GameImpl) game).getTerrainFactor(p3), is(2));
         // cities have multiplier 3
-        assertThat(game.getTerrainFactor(p4), is(3));
+        assertThat(((GameImpl) game).getTerrainFactor(p4), is(3));
     }
 
 

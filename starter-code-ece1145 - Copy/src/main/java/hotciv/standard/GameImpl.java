@@ -54,8 +54,8 @@ public class GameImpl implements Game {
 
   //add strategy variables
   private ActionStrategy actionStrategy;
-  private AttackStrategy attackStrategy = new AttackStrategyEpsilon();
-  private WinnerStrategy winnerStrategy = new WinnerStrategyEpsilon();
+  private AttackStrategy attackStrategy;
+  private WinnerStrategy winnerStrategy;
   private HashMap<Player, Integer> winHashMap = new HashMap<Player, Integer>();
 
     /**
@@ -278,7 +278,7 @@ public class GameImpl implements Game {
     return numberOfAdjacentUnits;
   }
 
-  private int getTerrainFactor(Position p) {
+  public int getTerrainFactor(Position p) {
     String terrain = getTileAt(p).getTypeString();
 
     if (getCityAt(p) != null){
