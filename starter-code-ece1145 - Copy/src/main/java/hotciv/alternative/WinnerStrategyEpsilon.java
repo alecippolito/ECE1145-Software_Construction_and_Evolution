@@ -5,14 +5,17 @@ import java.util.HashMap;
 import hotciv.framework.Player;
 import hotciv.framework.Tile;
 import hotciv.framework.WinnerStrategy;
+import hotciv.standard.*;
 
 public class WinnerStrategyEpsilon implements WinnerStrategy {
+
+    private int i = 0;
     public Player getWinner(int age, ArrayList<Tile> cityTiles, HashMap<Player, Integer> winHashMap, int roundNumber) {
         Player winner = null;
         for(Player key : winHashMap.keySet()) {
             if(winHashMap.get(key) >= 3){
                 winner = key;
-            }else{}
+            }
         }
         return winner;
 
