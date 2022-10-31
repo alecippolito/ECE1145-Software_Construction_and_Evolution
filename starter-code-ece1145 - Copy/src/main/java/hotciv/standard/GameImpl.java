@@ -54,9 +54,9 @@ public class GameImpl implements Game {
 
   //add strategy variables
   private ActionStrategy actionStrategy;
-  private AttackStrategy attackStrategy;
-  private WinnerStrategy winnerStrategy;
-  private HashMap<Player, Integer> winHashMap;
+  private AttackStrategy attackStrategy = new AttackStrategyEpsilon();
+  private WinnerStrategy winnerStrategy = new WinnerStrategyEpsilon();
+  private HashMap<Player, Integer> winHashMap = new HashMap<Player, Integer>();
 
     /**
      * Constructor
@@ -175,49 +175,50 @@ public class GameImpl implements Game {
   public boolean moveUnit( Position from, Position to ) {
 
       //Check if terrain can be moved over
-      Tile m = getTileAt(to);
-      if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
-          return false;
+    Tile m = getTileAt(to);
+    if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
+      return false;
 
     Unit fUnit = getUnitAt(from);
     Unit tUnit = getUnitAt(to);
-    Unit defendUnit = getUnitAt(to);
-    Unit attackUnit = getUnitAt(from);
+
+    Player attacker = fUnit.getOwner();
+    Player defender = tUnit.getOwner();
 
     int attackerAdjacentUnits = 0;
     int attackerTerrainFactor = 1;
     int defenderAdjacentUnits = 0;
     int defenderTerrainFactor = 1;
 
-    attackerAdjacentUnits = getNumberOfAdjacentUnits(from, attackUnit.getOwner());
-    defenderAdjacentUnits = getNumberOfAdjacentUnits(to, defendUnit.getOwner());
+    attackerAdjacentUnits = getNumberOfAdjacentUnits(from, attacker);
+    defenderAdjacentUnits = getNumberOfAdjacentUnits(to, defender);
     attackerTerrainFactor = getTerrainFactor(from);
     defenderTerrainFactor = getTerrainFactor(to);
 
 
     //Check units if valid to control
-    if (fUnit.getOwner() != currentPlayerInTurn)
+    if (attacker != currentPlayerInTurn)
       return false;
     //Check units if valid to move into
-    if (tUnit.getOwner() == currentPlayerInTurn) {
+    if (defender == currentPlayerInTurn) {
       return false;
-    } else if (tUnit.getOwner() != currentPlayerInTurn) {
+    } else if (defender != currentPlayerInTurn) {
       // Unit conducts attack
-        if (attackStrategy.attack(attackUnit, defendUnit, attackerAdjacentUnits, attackerTerrainFactor,
-                defenderAdjacentUnits, defenderTerrainFactor)) {
-          if (getCityAt(to) != null) {
-            getCityAt(to).setOwner(fUnit.getOwner());
-          }
-          setUnitAt(to, fUnit);
-          removeUnitAt(from);
-          fUnit.canMove();
-          winnerStrategy.countAttack(winHashMap, attackUnit.getOwner());
-          return true;
+      if (attackStrategy.attack(fUnit, tUnit, attackerAdjacentUnits, attackerTerrainFactor,
+              defenderAdjacentUnits, defenderTerrainFactor)) {
+        if (getCityAt(to) != null) {
+          getCityAt(to).setOwner(attacker);
         }
-        // Unit fails attack
-        else {
-          removeUnitAt(from);
-        }
+        setUnitAt(to, fUnit);
+        removeUnitAt(from);
+        fUnit.canMove();
+        winnerStrategy.countAttack(winHashMap, attacker);
+      }
+      // Unit fails attack
+      else {
+        removeUnitAt(from);
+      }
+      return true;
     }
     //Complete movement if nothing else
     setUnitAt(to, fUnit);
