@@ -33,18 +33,14 @@ public class WinnerStrategyZeta implements WinnerStrategy {
     @Override
     public Player getWinner(int age, HashMap<Position, City> Cities) {
         Player winner = null;
-        for (City city : Cities.values())
-        {
-            if(winner==null)
-            {
+        for (City city : Cities.values()){
+            if(winner==null){
                 winner = city.getOwner();
             }
-            else if(winner == city.getOwner())
-            {
+            else if(winner == city.getOwner()){
                 continue;
             }
-            else
-            {
+            else{
                 return null;
             }
         }
