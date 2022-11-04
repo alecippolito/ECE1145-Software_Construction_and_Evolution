@@ -47,12 +47,36 @@ public class TestZetaCiv {
     }
 
     @Test
-    public void winnerShouldBeBlue(){
-
+    public void winnerShouldBeBlueAfter20Rounds(){
+        // have game in round 25
+        int round = 0;
+        for (int i = 0; i < 25; i++) {
+            game.endOfTurn();
+            game.endOfTurn();
+            round ++;
+        }
+        // have blue get 3 wins
+        hm.put(Player.BLUE, 3);
+        // get winner
+        Player winner = winnerStrategy.getWinner(game.getAge(), null, hm, round, Cities);
+        // compare winner
+        assertEquals(winner,Player.BLUE);
     }
 
     @Test
-    public void winnerShouldBeRed(){
-
+    public void winnerShouldBeRedAfter20Round(){
+        // have game in round 25
+        int round = 0;
+        for (int i = 0; i < 25; i++) {
+            game.endOfTurn();
+            game.endOfTurn();
+            round ++;
+        }
+        // have red get 3 wins
+        hm.put(Player.RED, 3);
+        // get winner
+        Player winner = winnerStrategy.getWinner(game.getAge(), null, hm, round, Cities);
+        // compare winner
+        assertEquals(winner,Player.RED);
     }
 }
