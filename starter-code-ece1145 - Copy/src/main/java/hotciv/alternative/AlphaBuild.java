@@ -18,8 +18,6 @@ public class AlphaBuild implements worldBuild{
     //Hold the data for the Cities
     private HashMap<Position,City> Cities;
 
-    private String t = "Alpha";
-
     //create the world
     AlphaBuild(){
 
@@ -66,6 +64,4 @@ public class AlphaBuild implements worldBuild{
     public HashMap<Position,City> returnCities(){
         return Cities;
     }
-
-    public String getT(){return t;}
 }

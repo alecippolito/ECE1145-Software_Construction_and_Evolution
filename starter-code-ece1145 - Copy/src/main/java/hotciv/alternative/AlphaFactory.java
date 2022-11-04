@@ -14,7 +14,7 @@ public class AlphaFactory implements GameFactory {
         return new AttackStrategyEpsilon();
     }
     public WinnerStrategy createWinnerStrategy() {
-        return new WinnerStrategyEpsilon();
+        return new WinnerStrategyAlpha();
     }
     public AgingStrategy createAgingStrategy() {
         return new AgingStrategyAlpha();

@@ -5,7 +5,7 @@ import hotciv.framework.*;
 public class BetaFactory implements GameFactory {
 
     public worldBuild createWorldBuild() {
-        return new BetaBuild();
+        return new AlphaBuild();
     }
     public ActionStrategy createActionStrategy() {
         return null;

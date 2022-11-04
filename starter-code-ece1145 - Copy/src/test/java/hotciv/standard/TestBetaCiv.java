@@ -1,6 +1,5 @@
 package hotciv.standard;
 
-import hotciv.alternative.BetaBuild;
 import hotciv.alternative.BetaFactory;
 import hotciv.framework.*;
 

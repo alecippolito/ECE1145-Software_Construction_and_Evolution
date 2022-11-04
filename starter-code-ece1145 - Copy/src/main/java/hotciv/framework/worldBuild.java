@@ -21,6 +21,5 @@ public interface worldBuild {
 
     public HashMap<Position, City> returnCities();
 
-    public String getT();
 
 }

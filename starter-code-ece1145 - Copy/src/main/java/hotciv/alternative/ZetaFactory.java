@@ -17,6 +17,6 @@ public class ZetaFactory implements GameFactory {
     }
 
     public AgingStrategy createAgingStrategy() {
-        return new AgingStrategyBeta();
+        return new AgingStrategyAlpha();
     }
 }

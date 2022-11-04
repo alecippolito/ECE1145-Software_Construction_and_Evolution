@@ -114,33 +114,8 @@ public class GameImpl implements Game {
      **/
     return null;
   }
-  public Player getWinner() {
-    Player winner = null;
-    if (worldLayout.getT().equals("Beta")) {
-      HashMap<Position,City> Cities = worldLayout.returnCities();
-      for (City city : Cities.values())
-      {
-        if(winner==null)
-        {
-          winner = city.getOwner();
-        }
-        else if(winner == city.getOwner())
-        {
-          continue;
-        }
-        else
-        {
-          return null;
-        }
-      }
-      return winner;
-
-    } else { // DEFAULT WINNER (FROM ALPHA AND ALL OTHERS EXCEPT BETA)
-      if (getAge() == -3000) {
-        return Player.RED;
-      }
-    }
-      return null;
+    public Player getWinner() {
+        return winnerStrategy.getWinner(getAge(),worldLayout.returnCities());
     }
 
 
