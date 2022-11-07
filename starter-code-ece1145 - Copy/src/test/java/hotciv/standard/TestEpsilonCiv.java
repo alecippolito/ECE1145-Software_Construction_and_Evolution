@@ -114,18 +114,9 @@ public class TestEpsilonCiv {
 
     @Test
     public void testArcherOnPlainsAttackSettlerOnHills() {
-        Position p1 = new Position(0,0);
-        Position p2 = new Position(0,1);
-
-        ((GameImpl) game).setTileTypeFromGame(p1, PLAINS);
-        ((GameImpl) game).setTileTypeFromGame(p2, HILLS);
-
-        ((GameImpl) game).setUnitAt(p1, new UnitArcher(Player.RED));
-        ((GameImpl) game).setUnitAt(p2, new UnitSettler(Player.BLUE));
-
-        game.moveUnit(p1, p2);
-        assertNull(game.getUnitAt(p1));
-        assertThat(game.getUnitAt(p2).getTypeString(), is(SETTLER));
+        @Test
+    public void testArcherOnPlainsAttackSettlerOnHills() {
+        assertFalse(attackStrategy.attack(new UnitArcher(Player.RED), new UnitSettler(Player.BLUE), 0, 1, 0, 2));
     }
 
     @Test public void shouldGiveCorrectTerrainFactors() {
