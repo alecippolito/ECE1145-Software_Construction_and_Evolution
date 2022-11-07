@@ -114,8 +114,6 @@ public class TestEpsilonCiv {
 
     @Test
     public void testArcherOnPlainsAttackSettlerOnHills() {
-        @Test
-    public void testArcherOnPlainsAttackSettlerOnHills() {
         assertFalse(attackStrategy.attack(new UnitArcher(Player.RED), new UnitSettler(Player.BLUE), 0, 1, 0, 2));
     }
 

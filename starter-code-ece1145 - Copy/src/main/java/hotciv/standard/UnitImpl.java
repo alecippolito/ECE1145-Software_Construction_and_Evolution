@@ -1,5 +1,6 @@
 package hotciv.standard;
 import hotciv.framework.*;
+import java.util.HashMap;
 
 public abstract class UnitImpl implements Unit {
     UnitStats unitStat;

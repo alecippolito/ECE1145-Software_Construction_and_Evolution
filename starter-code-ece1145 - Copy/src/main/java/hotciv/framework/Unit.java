@@ -1,4 +1,6 @@
 package hotciv.framework;
+import java.util.HashMap;
+
 
 /** Represents a single unit in the game.
  Responsibilities:

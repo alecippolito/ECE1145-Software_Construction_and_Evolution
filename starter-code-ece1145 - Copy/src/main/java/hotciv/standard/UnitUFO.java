@@ -23,7 +23,7 @@ public class UnitUFO extends UnitImpl {
     }
 
     private void abductPopulation(Position p, HashMap<Position,City> c) {
-        c.get(p).changeSize(false);
+        ((CityImpl) c.get(p)).changeSize(false);
         if (c.get(p).getSize() == 0)
             c.remove(p);
     }
