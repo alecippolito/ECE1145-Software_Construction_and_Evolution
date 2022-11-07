@@ -52,12 +52,23 @@ public class CityImpl implements City {
      */
     public Player getOwner(){
         return CityOwner;
-    };
+    }
 
     /** return the size of the population.
      * @return population size.
      */
-    public int getSize(){return population;};
+    public int getSize(){return population;}
+    
+    /** change the size of the population.
+     * @param sign to determine -1 or +1 to population
+     */
+    public void changeSize(boolean sign){
+        //sign true for add 1, sign false for subtract 1
+        if (sign)
+            population = population + 1;
+        else
+            population = population - 1;
+    }
 
     /** return the treasury, i.e. the
      * number of 'money'/production in the
@@ -111,6 +122,10 @@ public class CityImpl implements City {
 
             //Cost of 30
             UnitCost = 30;
+        } else if (s == GameConstants.UFO) {
+
+            //Cost of 60
+            UnitCost = 60;
         } else {
             UnitCost = -1;
         }
