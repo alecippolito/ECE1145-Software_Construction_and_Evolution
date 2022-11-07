@@ -42,6 +42,8 @@ public abstract class UnitImpl implements Unit {
     }
 
     public void action() {}
+    
+    public void specialAction(HashMap<Position,Tile> w, HashMap<Position,City> c, Position p) {}
 
     public boolean canMove() {return unitStat.canMove();}
 
@@ -121,6 +123,8 @@ public abstract class UnitImpl implements Unit {
         }
 
         public void action() {}
+        
+        public void specialAction(HashMap<Position,Tile> w, HashMap<Position,City> c, Position p) {}
 
         public boolean canMove() {return moveCount > 0;}
 
