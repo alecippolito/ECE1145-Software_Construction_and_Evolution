@@ -60,7 +60,16 @@ public interface Unit {
    */
   public int getAttackingStrength();
 
+  /** performs a unit's action (overridden)
+   */
   public void action();
+
+  /** performs action for UFO
+   * @param w is a tile of the world
+   * @param c is a city at a position
+   * @param p is position for action and other variables
+   */
+  public void specialAction(HashMap<Position,Tile> w, HashMap<Position,City> c, Position p);
 
   public void setUnitOwner(Player p);
 
