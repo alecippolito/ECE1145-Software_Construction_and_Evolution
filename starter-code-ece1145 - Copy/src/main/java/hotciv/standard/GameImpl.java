@@ -125,16 +125,23 @@ public class GameImpl implements Game {
  
   public boolean moveUnit( Position from, Position to ) {
 
-      //Check if terrain can be moved over
-    Tile m = getTileAt(to);
-    if (m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS))
-      return false;
-
     Unit fUnit = getUnitAt(from);
     Unit tUnit = getUnitAt(to);
 
+    // UFO boolean variable
+    boolean checkUFO = fUnit.getTypeString().equals(GameConstants.UFO);
+
+    //Check if terrain can be moved over
+    Tile m = getTileAt(to);
+    if ((m.getTypeString().equals(MOUNTAINS) || m.getTypeString().equals(OCEANS)) && !checkUFO)
+      return false;
+
     Player attacker = fUnit.getOwner();
-    Player defender = tUnit.getOwner();
+    Player defender;
+    if (tUnit != null)
+      defender = tUnit.getOwner();
+    else
+      defender = Player.BLANK;
 
     int attackerAdjacentUnits = 0;
     int attackerTerrainFactor = 1;
@@ -151,30 +158,44 @@ public class GameImpl implements Game {
     if (attacker != currentPlayerInTurn)
       return false;
     //Check units if valid to move into
+    if ((Math.abs(from.getRow()-to.getRow()) > 1
+            || Math.abs(from.getColumn()-to.getColumn()) > 1
+            || ((Math.abs(from.getRow()-to.getRow()) == 0) && (Math.abs(from.getColumn()-to.getColumn()) == 0))) && !checkUFO) {
+      return false;
+    }
+    //Check UFO movement
+    else if ((Math.abs(from.getRow()-to.getRow()) > 2
+            || Math.abs(from.getColumn()-to.getColumn()) > 2
+            || ((Math.abs(from.getRow()-to.getRow()) == 0) && (Math.abs(from.getColumn()-to.getColumn()) == 0))) && checkUFO) {
+      return false;
+    }
+
     if (defender == currentPlayerInTurn) {
       return false;
-    } else if (defender != currentPlayerInTurn) {
-      // Unit conducts attack
-      if (attackStrategy.attack(fUnit, tUnit, attackerAdjacentUnits, attackerTerrainFactor,
-              defenderAdjacentUnits, defenderTerrainFactor)) {
-        if (getCityAt(to) != null) {
-          getCityAt(to).setOwner(attacker);
+    } else {
+
+      if (tUnit != null) {
+        // Unit conducts attack
+        if (attackStrategy.attack(fUnit, tUnit, attackerAdjacentUnits, attackerTerrainFactor,
+                defenderAdjacentUnits, defenderTerrainFactor)) {
+          if (getCityAt(to) != null && !checkUFO) {
+            getCityAt(to).setOwner(attacker);
+          }
+          setUnitAt(to, fUnit);
+          removeUnitAt(from);
+          fUnit.canMove();
+          winnerStrategy.countAttack(winHashMap, attacker);
         }
-        setUnitAt(to, fUnit);
-        removeUnitAt(from);
-        fUnit.canMove();
-        winnerStrategy.countAttack(winHashMap, attacker);
+        // Unit fails attack
+        else {
+          removeUnitAt(from);
+        }
       }
-      // Unit fails attack
-      else {
-        removeUnitAt(from);
-      }
+      setUnitAt(to, fUnit);
+      removeUnitAt(from);
+      fUnit.canMove();
       return true;
     }
-    //Complete movement if nothing else
-    setUnitAt(to, fUnit);
-    removeUnitAt(from);
-    return true;
   }
  
   public void endOfTurn() {
