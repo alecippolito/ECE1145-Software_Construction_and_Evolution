@@ -45,6 +45,11 @@ public interface City {
    * @return population size.
    */
   public int getSize();
+ 
+ /** change the size of the population.
+   * @param sign to determine -1 or +1 to population
+   */
+  public void changeSize(boolean sign);
 
   /** return the treasury, i.e. the
    * number of 'money'/production in the
