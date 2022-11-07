@@ -14,7 +14,7 @@ public class BetaFactory implements GameFactory {
         return null;
     }
     public WinnerStrategy createWinnerStrategy() {
-        return null;
+        return new WinnerStrategyBeta();
     }
     public AgingStrategy createAgingStrategy() {
         return new AgingStrategyBeta();

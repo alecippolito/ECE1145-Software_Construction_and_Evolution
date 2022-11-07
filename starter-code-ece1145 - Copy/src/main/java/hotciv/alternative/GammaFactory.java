@@ -13,10 +13,10 @@ public class GammaFactory implements GameFactory {
         return null;
     }
     public WinnerStrategy createWinnerStrategy() {
-        return null;
+        return new WinnerStrategyAlpha();
     }
 
     public AgingStrategy createAgingStrategy() {
-        return null;
+        return new AgingStrategyAlpha();
     }
 }

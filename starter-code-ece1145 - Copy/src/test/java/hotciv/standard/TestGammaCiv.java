@@ -90,5 +90,4 @@ public class TestGammaCiv {
         assertEquals(2, archer.getAttackingStrength());
         assertEquals(1, archer.getMoveCount());
     }
-
 }

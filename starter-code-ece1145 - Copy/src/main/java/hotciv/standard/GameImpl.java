@@ -62,7 +62,7 @@ public class GameImpl implements Game {
     /**
      * Constructor
      */
-    GameImpl(GameFactory factory){
+    GameImpl(GameFactory factory) {
         this.factory = factory;
 
         this.worldLayout = factory.createWorldBuild();
@@ -355,4 +355,10 @@ public class GameImpl implements Game {
     return worldLayout.returnCities();
   }
 
+    /**
+     * Return the Action strategy variable - used for testing
+     */
+    public ActionStrategy returnActionStrategy(){
+        return this.actionStrategy;
+    }
 }
