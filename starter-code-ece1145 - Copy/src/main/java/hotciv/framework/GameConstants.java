@@ -36,6 +36,8 @@ public class GameConstants {
   public static final String ARCHER    = "archer";
   public static final String LEGION    = "legion";
   public static final String SETTLER   = "settler";
+  // Special unit type
+  public static final String UFO   = "ufo";
   // Valid terrain types
   public static final String PLAINS    = "plains";
   public static final String OCEANS    = "ocean";
