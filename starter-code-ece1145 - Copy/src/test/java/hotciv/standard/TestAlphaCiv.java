@@ -130,7 +130,7 @@ public class TestAlphaCiv {
     assertThat(game.getUnitAt(p).getTypeString(), is(LEGION));
     assertThat(game.getUnitAt(p).getOwner(), is(Player.BLUE));
   }
-    
+
   @Test
   public void playerShouldNotMoveOverMountain() {
     Unit unit = new UnitArcher(Player.RED);
@@ -149,6 +149,53 @@ public class TestAlphaCiv {
     ((GameImpl) game).setUnitAt(p1, unit);
     ((GameImpl) game).setTileTypeFromGame(p2, OCEANS);
     assertThat(game.moveUnit(p1, p2), is(false));
+  }
+
+  @Test
+  public void playerCannotMoveTwoSpaces() {
+    Unit unit = new UnitArcher(Player.RED);
+    Position p1 = new Position(2, 0);
+    Position p2 = new Position(0, 0);
+    ((GameImpl) game).setUnitAt(p1, unit);
+    assertThat(game.moveUnit(p1, p2), is(false));
+  }
+
+
+  @Test
+  public void RedShouldNotMoveBlue() {
+    Position p1 = new Position(3, 2);
+    Position p2 = new Position(3, 3);
+
+    ((GameImpl) game).setUnitAt(p1, new UnitLegion(Player.BLUE));
+    assertThat(game.moveUnit(p1, p2), is(false));
+  }
+
+  @Test
+  public void RedShouldNotMoveIntoAlly() {
+    Position p1 = new Position(3, 2);
+    Position p2 = new Position(3, 3);
+
+    ((GameImpl) game).setUnitAt(p1, new UnitLegion(Player.RED));
+    ((GameImpl) game).setUnitAt(p2, new UnitSettler(Player.RED));
+    assertThat(game.moveUnit(p1, p2), is(false));
+  }
+
+
+  @Test
+  public void playerCannotMoveIntoCurrentSpace() {
+    Unit unit = new UnitArcher(Player.RED);
+    Position p1 = new Position(2, 0);
+    Position p2 = new Position(2, 0);
+    ((GameImpl) game).setUnitAt(p1, unit);
+    assertThat(game.moveUnit(p1, p2), is(false));
+  }
+  @Test
+  public void playerMovesWithoutIssue() {
+    Unit unit = new UnitArcher(Player.RED);
+    Position p1 = new Position(2, 0);
+    Position p2 = new Position(3, 0);
+    ((GameImpl) game).setUnitAt(p1, unit);
+    assertThat(game.moveUnit(p1, p2), is(true));
   }
 
   @Test
@@ -179,16 +226,7 @@ public class TestAlphaCiv {
     assertThat(game.getCityAt(p2).getSize(), is(1));
   }
 
-  @Test
-  public void RedShouldNotMoveBlue() {
-    Position p1 = new Position(3, 2);
-    Position p2 = new Position(3, 3);
- 
-    ((GameImpl) game).setUnitAt(p1, new UnitLegion(Player.BLUE));
-    ((GameImpl) game).setUnitAt(p2, new UnitSettler(Player.RED));
-    assertThat(game.moveUnit(p1, p2), is(false));
-  }
-    
+
   @Test
   public void AttackUnit() {
     Position p1 = new Position(3, 2);
