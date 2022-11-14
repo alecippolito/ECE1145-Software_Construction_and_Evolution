@@ -62,7 +62,7 @@ public class GameImpl implements Game {
     /**
      * Constructor
      */
-    GameImpl(GameFactory factory) {
+    public GameImpl(GameFactory factory) {
         this.factory = factory;
 
         this.worldLayout = factory.createWorldBuild();
