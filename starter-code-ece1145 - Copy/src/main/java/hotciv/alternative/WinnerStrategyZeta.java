@@ -8,43 +8,33 @@ import java.util.HashMap;
 public class WinnerStrategyZeta implements WinnerStrategy {
     private int i = 0;
     @Override
-    public Player getWinner(int age, ArrayList<Tile> cityTiles, HashMap<Player, Integer> winHashMap, int roundNumber, HashMap<Position, City> Cities) {
+    public Player getWinner(int age, HashMap<Position, City> Cities, HashMap<Player, Integer> winHashMap, int roundNumber) {
         if(roundNumber <= 20){
             // beta strategy
-            return getWinner(age, Cities);
+            Player winner = null;
+            for (City city : Cities.values()){
+                if(winner==null){
+                    winner = city.getOwner();
+                }
+                else if(winner == city.getOwner()){
+                    continue;
+                }
+                else{
+                    return null;
+                }
+            }
+            return winner;
         } else{
             // epsilon strategy
-            return getWinner(age,cityTiles,winHashMap, roundNumber);
+            Player winner = null;
+            for(Player key : winHashMap.keySet()) {
+                if(winHashMap.get(key) >= 3){
+                    winner = key;
+                }else{}
+            }
+            return winner;
         }
 
-    }
-
-    @Override
-    public Player getWinner(int age, ArrayList<Tile> cityTiles, HashMap<Player, Integer> winHashMap, int roundNumber) {
-        Player winner = null;
-        for(Player key : winHashMap.keySet()) {
-            if(winHashMap.get(key) >= 3){
-                winner = key;
-            }else{}
-        }
-        return winner;
-    }
-
-    @Override
-    public Player getWinner(int age, HashMap<Position, City> Cities) {
-        Player winner = null;
-        for (City city : Cities.values()){
-            if(winner==null){
-                winner = city.getOwner();
-            }
-            else if(winner == city.getOwner()){
-                continue;
-            }
-            else{
-                return null;
-            }
-        }
-        return winner;
     }
 
     @Override

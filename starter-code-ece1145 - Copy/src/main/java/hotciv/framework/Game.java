@@ -1,5 +1,7 @@
 package hotciv.framework;
 
+import java.util.HashMap;
+
 /** Game is the central interface allowing a client to access and
  * modify the state of a HotCiv game.
 
@@ -134,4 +136,7 @@ public interface Game {
    * Nothing happens in case the unit has no associated action.
    */
   public void performUnitActionAt( Position p );
+  public HashMap<Position,City> returnCities();
+  public int getRoundNumber();
 }
+

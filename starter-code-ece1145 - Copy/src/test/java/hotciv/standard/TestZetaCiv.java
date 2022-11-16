@@ -58,7 +58,7 @@ public class TestZetaCiv {
         // have blue get 3 wins
         hm.put(Player.BLUE, 3);
         // get winner
-        Player winner = winnerStrategy.getWinner(game.getAge(), null, hm, round, Cities);
+        Player winner = winnerStrategy.getWinner(game.getAge(), game.returnCities(), hm, 23);
         // compare winner
         assertEquals(winner,Player.BLUE);
     }
@@ -75,7 +75,7 @@ public class TestZetaCiv {
         // have red get 3 wins
         hm.put(Player.RED, 3);
         // get winner
-        Player winner = winnerStrategy.getWinner(game.getAge(), null, hm, round, Cities);
+        Player winner = winnerStrategy.getWinner(game.getAge(), game.returnCities(), hm, 23);
         // compare winner
         assertEquals(winner,Player.RED);
     }

@@ -44,6 +44,7 @@ public class GameImpl implements Game {
   int turnNumber = 0;
   int blueSize = 1;
   int redSize = 1;
+  int roundNumber = 0;
 
   //Store the world building strategy
   private worldBuild worldLayout;
@@ -114,8 +115,9 @@ public class GameImpl implements Game {
      **/
     return null;
   }
+  // worldLayout.returnTiles()
     public Player getWinner() {
-        return winnerStrategy.getWinner(getAge(),worldLayout.returnCities());
+        return winnerStrategy.getWinner(getAge(),worldLayout.returnCities(),winHashMap, roundNumber);
     }
 
 
@@ -205,7 +207,9 @@ public class GameImpl implements Game {
     // this will only work if only 2 people are playing
     if(turnNumber % 2 != 0 || turnNumber == 0){
       return false;
-    } return true;
+    }
+    roundNumber++;
+    return true;
   }
  
  private int getNumberOfAdjacentUnits(Position p, Player player) {
@@ -382,4 +386,5 @@ public class GameImpl implements Game {
     public ActionStrategy returnActionStrategy(){
         return this.actionStrategy;
     }
+    public int getRoundNumber(){return roundNumber;};
 }
