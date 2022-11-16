@@ -117,15 +117,20 @@ public class GameImpl implements Game {
   }
   // worldLayout.returnTiles()
     public Player getWinner() {
-        return winnerStrategy.getWinner(getAge(),worldLayout.returnCities(),winHashMap, roundNumber);
+        Player winner = winnerStrategy.getWinner(getAge(),worldLayout.returnCities(),winHashMap, roundNumber);
+        if (winner != null){ System.out.println(winner + " has won!");};
+        return winner;
     }
 
 
   public int getAge() {
-      return agingStrategy.getAge(endOfRound());
+      int age = agingStrategy.getAge(endOfRound());
+      System.out.println("Current Age is " + age);
+      return age;
   }
  
   public boolean moveUnit( Position from, Position to ) {
+        System.out.print(currentPlayerInTurn + " moves from " + from + " to " + to);
 
     Unit fUnit = getUnitAt(from);
     Unit tUnit = getUnitAt(to);
@@ -201,6 +206,7 @@ public class GameImpl implements Game {
   }
  
   public void endOfTurn() {
+        System.out.println(currentPlayerInTurn + "'s turn is over");
     turnNumber++;
   }
   public boolean endOfRound(){
@@ -208,6 +214,7 @@ public class GameImpl implements Game {
     if(turnNumber % 2 != 0 || turnNumber == 0){
       return false;
     }
+    System.out.println("End of round " + roundNumber);
     roundNumber++;
     return true;
   }
@@ -271,6 +278,7 @@ public class GameImpl implements Game {
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
   public void performUnitActionAt( Position p ) {
+        System.out.println(currentPlayerInTurn + " performing unit action at " + p);
     Unit unit = getUnitAt(p);
     if (unit != null && currentPlayerInTurn.equals(unit.getOwner())) {
       actionStrategy.performUnitActionAt(worldLayout.returnTiles(), worldLayout.returnCities(),p);
