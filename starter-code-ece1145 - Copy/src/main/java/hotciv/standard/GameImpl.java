@@ -394,5 +394,17 @@ public class GameImpl implements Game {
     public ActionStrategy returnActionStrategy(){
         return this.actionStrategy;
     }
-    public int getRoundNumber(){return roundNumber;};
+    public int getRoundNumber(){return roundNumber;}
+
+    @Override
+    public void addObserver(GameObserver observer) {
+
+    }
+
+    @Override
+    public void setTileFocus(Position position) {
+
+    }
+
+    ;
 }
