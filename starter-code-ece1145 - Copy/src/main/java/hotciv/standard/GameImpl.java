@@ -46,6 +46,8 @@ public class GameImpl implements Game {
   int redSize = 1;
   int roundNumber = 0;
 
+  int age = -4000;
+
   //Store the world building strategy
   private worldBuild worldLayout;
 
@@ -106,7 +108,10 @@ public class GameImpl implements Game {
   }
  
   public City getCityAt( Position p ) { return worldLayout.returnCities().get(p);}
- 
+
+   public Player getCurrentPlayer(){
+        return currentPlayer;
+   }
   public Player getPlayerInTurn() {
     if( currentPlayer == null){
       currentPlayer = Player.BLUE;
@@ -138,9 +143,11 @@ public class GameImpl implements Game {
         return winner;
     }
 
-
+public int getCurrentAge(){
+        return age;
+}
   public int getAge() {
-      int age = agingStrategy.getAge(endOfRound());
+      age = agingStrategy.getAge(endOfRound());
       System.out.println("Current Age is " + age);
       return age;
   }
