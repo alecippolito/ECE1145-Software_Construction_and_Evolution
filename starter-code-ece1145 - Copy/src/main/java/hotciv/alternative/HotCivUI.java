@@ -13,7 +13,6 @@ public class HotCivUI extends JFrame {
 
     public Game game;
     private JPanel mainPanel;
-    private JTable table1;
 
     public HotCivUI(){
 

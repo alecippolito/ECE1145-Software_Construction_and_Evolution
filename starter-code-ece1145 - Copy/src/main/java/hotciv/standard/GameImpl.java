@@ -60,6 +60,10 @@ public class GameImpl implements Game {
   private AgingStrategy agingStrategy;
   private HashMap<Player, Integer> winHashMap = new HashMap<Player, Integer>();
 
+
+  //observer class
+    protected GameObserver observer;
+
     /**
      * Constructor
      */
@@ -83,10 +87,22 @@ public class GameImpl implements Game {
   }
 
   public void setUnitAt(Position p, Unit u) {
-    ((TileImpl) getTileAt(p)).setUnit(u);
+
+        ((TileImpl) getTileAt(p)).setUnit(u);
+
+      /**
+       * UPDATE OBSERVER
+       */
+      updateObserversWorld(p);
   }
   public void removeUnitAt(Position p) {
-    ((TileImpl) getTileAt(p)).setUnit(null);
+
+        ((TileImpl) getTileAt(p)).setUnit(null);
+
+      /**
+       * UPDATE OBSERVER
+       */
+      updateObserversWorld(p);
   }
  
   public City getCityAt( Position p ) { return worldLayout.returnCities().get(p);}
@@ -201,6 +217,15 @@ public class GameImpl implements Game {
       setUnitAt(to, fUnit);
       removeUnitAt(from);
       fUnit.canMove();
+
+
+        /**
+         * UPDATE OBSERVER
+         */
+        updateObserversWorld(to);
+        updateObserversWorld(from);
+
+
       return true;
     }
   }
@@ -208,6 +233,10 @@ public class GameImpl implements Game {
   public void endOfTurn() {
         System.out.println(currentPlayerInTurn + "'s turn is over");
     turnNumber++;
+      /**
+       * UPDATE OBSERVER
+       */
+      updateObserversTurn(currentPlayer,agingStrategy.getAge(false));
   }
   public boolean endOfRound(){
     // this will only work if only 2 people are playing
@@ -216,6 +245,7 @@ public class GameImpl implements Game {
     }
     System.out.println("End of round " + roundNumber);
     roundNumber++;
+    AddProductionEndOfRound();
     return true;
   }
  
@@ -275,14 +305,30 @@ public class GameImpl implements Game {
     }
   }
  
-  public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
-  public void changeProductionInCityAt( Position p, String unitType ) {}
+  public void changeWorkForceFocusInCityAt( Position p, String balance ) {
+
+      /**
+       * UPDATE OBSERVER
+       */
+      updateObserversWorld(p);
+  }
+  public void changeProductionInCityAt( Position p, String unitType ) {
+        /**
+       * UPDATE OBSERVER
+       */
+      updateObserversWorld(p);
+    }
   public void performUnitActionAt( Position p ) {
         System.out.println(currentPlayerInTurn + " performing unit action at " + p);
     Unit unit = getUnitAt(p);
     if (unit != null && currentPlayerInTurn.equals(unit.getOwner())) {
       actionStrategy.performUnitActionAt(worldLayout.returnTiles(), worldLayout.returnCities(),p);
     }
+
+      /**
+       * UPDATE OBSERVER
+       */
+      updateObserversWorld(p);
   }
 
   public HashMap<Position, Tile> returnWorld()
@@ -293,6 +339,11 @@ public class GameImpl implements Game {
   public void setTileTypeFromGame(Position p, String s)
   {
     ((TileImpl) worldLayout.returnTiles().get(p)).setTileType(s);
+
+      /**
+       * UPDATE OBSERVER
+       */
+      updateObserversWorld(p);
   }
 
   public void setOwnerFromGame(Position p, Player pl){
@@ -304,6 +355,10 @@ public class GameImpl implements Game {
     //Loop through list of Positions with a city and add 6 production to each
     for (Position p: worldLayout.returnCities().keySet()){
       ((CityImpl) worldLayout.returnCities().get(p)).addProduction(6);
+        /**
+         * UPDATE OBSERVER
+         */
+        updateObserversWorld(p);
     }
   }
 
@@ -336,6 +391,11 @@ public class GameImpl implements Game {
     if (((TileImpl) getTileAt(p)).getUnit() == null){
       ((TileImpl) getTileAt(p)).setUnit(tempUnit);
       ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
+
+        /**
+         * UPDATE OBSERVER
+         */
+        updateObserversWorld(p);
       return;
     }
 
@@ -344,6 +404,11 @@ public class GameImpl implements Game {
       Position newPos = new Position(p.getRow()+1,p.getColumn());
       ((TileImpl) getTileAt(newPos)).setUnit(tempUnit);
       ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
+
+        /**
+         * UPDATE OBSERVER
+         */
+        updateObserversWorld(p);
       return;
     }
 
@@ -352,6 +417,11 @@ public class GameImpl implements Game {
       Position newPos = new Position(p.getRow(),p.getColumn()+1);
       ((TileImpl) getTileAt(newPos)).setUnit(tempUnit);
       ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
+
+        /**
+         * UPDATE OBSERVER
+         */
+        updateObserversWorld(p);
       return;
     }
 
@@ -360,6 +430,11 @@ public class GameImpl implements Game {
       Position newPos = new Position(p.getRow()-1,p.getColumn());
       ((TileImpl) getTileAt(newPos)).setUnit(tempUnit);
       ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
+
+        /**
+         * UPDATE OBSERVER
+         */
+        updateObserversWorld(p);
       return;
     }
 
@@ -368,13 +443,19 @@ public class GameImpl implements Game {
       Position newPos = new Position(p.getRow(),p.getColumn()-1);
       ((TileImpl) getTileAt(newPos)).setUnit(tempUnit);
       ((CityImpl) getCityAt(p)).subtractProduction(tempCost);
+
+        /**
+         * UPDATE OBSERVER
+         */
+        updateObserversWorld(p);
     }
 
     //If all units are occupied, nothing is placed
+
   }
 
-  /**
-   * CHECK TO SEE IF A CITY EXISTS AT A CERTAIN LOCATION
+    /**
+     * CHECK TO SEE IF A CITY EXISTS AT A CERTAIN LOCATION
    */
   public boolean cityExists(Position p){
     return worldLayout.returnCities().containsKey(p);
@@ -398,7 +479,7 @@ public class GameImpl implements Game {
 
     @Override
     public void addObserver(GameObserver observer) {
-
+        this.observer = observer;
     }
 
     @Override
@@ -406,5 +487,32 @@ public class GameImpl implements Game {
 
     }
 
-    ;
+    /**
+     *  Update the observers when called
+     */
+    public void updateObserversWorld(Position p){
+
+        /**
+         * UNITS AND CITY UPDATES FOR DISPLAY
+         */
+        if (observer != null) {
+            observer.worldChangedAt(p);
+        }
+    }
+    public void updateObserversTileFocus(Position p){
+        /**
+         * A CHANGE IN THE TILE THE PLAYER IS FOCUSING ON
+         */
+        if (observer != null) {
+            observer.tileFocusChangedAt(p);
+        }
+    }
+    public void updateObserversTurn(Player nextPlayer, int age){
+        /**
+         * WHEN THE TURN ENDS; NEW PLAYER AND AGE
+         */
+        if (observer != null) {
+            observer.turnEnds(nextPlayer, age);
+        }
+    }
 }
