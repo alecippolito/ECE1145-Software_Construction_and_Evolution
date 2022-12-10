@@ -156,8 +156,6 @@ public interface Game {
    * has focus.
    */
   public void setTileFocus(Position position);
-  public Player getCurrentPlayer();
-  public int getCurrentAge();
 }
 
 

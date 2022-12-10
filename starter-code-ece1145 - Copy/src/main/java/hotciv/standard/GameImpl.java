@@ -243,7 +243,7 @@ public int getCurrentAge(){
       /**
        * UPDATE OBSERVER
        */
-      updateObserversTurn(currentPlayer,agingStrategy.getAge(false));
+      updateObserversTurn(getCurrentPlayer(),getCurrentAge());
   }
   public boolean endOfRound(){
     // this will only work if only 2 people are playing
@@ -491,7 +491,12 @@ public int getCurrentAge(){
 
     @Override
     public void setTileFocus(Position position) {
+        //fill in code here
 
+        /**
+         * UPDATE OBSERVER
+         */
+        updateObserversWorld(position);
     }
 
     /**

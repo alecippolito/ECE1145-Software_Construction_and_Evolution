@@ -73,19 +73,18 @@ public class TestSubjectPattern {
     public void testTurnEnds(){
         //endOfTurn
         game.endOfTurn();
-        assertThat(((GameObserverTest) demoObserver).getTempPlayer(),is(game.getPlayerInTurn()));
-        assertThat(((GameObserverTest) demoObserver).getTempAge(),is(game.getAge()));
+        assertThat(((GameObserverTest) demoObserver).getTempPlayer(),is(((GameImpl) game).getCurrentPlayer()));
+        assertThat(((GameObserverTest) demoObserver).getTempAge(),is(((GameImpl) game).getCurrentAge()));
         game.endOfTurn();
-        assertThat(((GameObserverTest) demoObserver).getTempPlayer(),is(game.getPlayerInTurn()));
-        assertThat(((GameObserverTest) demoObserver).getTempAge(),is(game.getAge()));
+        assertThat(((GameObserverTest) demoObserver).getTempPlayer(),is(((GameImpl) game).getCurrentPlayer()));
+        assertThat(((GameObserverTest) demoObserver).getTempAge(),is(((GameImpl) game).getCurrentAge()));
 
     }
 
     @Test
     public void testTileFocusChangedAt(){
-        //not used at the moment
+        Position p = new Position(10,10);
+        game.setTileFocus(p);
+        assertThat(((GameObserverTest) demoObserver).getTempPosition(),is(p));
     }
-
-
-
 }
