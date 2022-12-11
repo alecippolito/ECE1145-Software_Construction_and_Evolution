@@ -78,8 +78,11 @@ public class StubGame2 implements Game {
     inTurn = (getPlayerInTurn() == Player.RED ?
               Player.BLUE : 
               Player.RED );
-    // no age increments
-    gameObserver.turnEnds(inTurn, -4000);
+    //increment the age if need be
+    if (getPlayerInTurn() == Player.RED){
+      incrementAge();
+    }
+    gameObserver.turnEnds(inTurn, getAge());
   }
   public Player getPlayerInTurn() { return inTurn; }
   
@@ -103,6 +106,7 @@ public class StubGame2 implements Game {
     red_archer = new StubUnit( GameConstants.ARCHER, Player.RED );   
 
     inTurn = Player.RED;
+    age = -4000;
   }
 
   // A simple implementation to draw the map of DeltaCiv
@@ -127,7 +131,11 @@ public class StubGame2 implements Game {
   // TODO: Add more stub behaviour to test MiniDraw updating
   public City getCityAt( Position p ) { return null; }
   public Player getWinner() { return null; }
-  public int getAge() { return 0; }  
+  int age;
+  public int getAge() { return age; }
+  public void incrementAge(){
+    age += 100;
+  }
   public void changeWorkForceFocusInCityAt( Position p, String balance ) {}
   public void changeProductionInCityAt( Position p, String unitType ) {}
   public void performUnitActionAt( Position p ) {}
