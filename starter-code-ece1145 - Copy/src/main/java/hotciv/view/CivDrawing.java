@@ -261,6 +261,7 @@ public class CivDrawing
       yeartype = "BC";
     }
     ageText.setText(abs(age)+" "+yeartype);
+    defineCityMap();
   }
 
 

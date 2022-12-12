@@ -64,10 +64,10 @@ public class DeltaBuild implements worldBuild{
 
         //add cities at the desired locations
         //RED city at (8,12)
-        Cities.put(new Position(8,12) , new CityImpl(Player.RED));
+        Cities.put(new Position(8,12) , new CityImpl(Player.RED,GameConstants.SETTLER,GameConstants.productionFocus));
 
         //BLUE city at (4,5)
-        Cities.put(new Position(4,5) , new CityImpl(Player.BLUE));
+        Cities.put(new Position(4,5) , new CityImpl(Player.BLUE,GameConstants.ARCHER,GameConstants.foodFocus));
     }
 
     public HashMap<Position, Tile> returnTiles(){

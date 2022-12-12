@@ -20,24 +20,8 @@ public class HotCivGUI {
 
         DrawingEditor editor =
                 new MiniDrawApplication( "HotCiv",
-                        new HotCivFactory3(game) );
+                        new HotCivFactory4(game) );
         editor.open();
-        TextFigure tf = new TextFigure("4000 BC",
-                new Point(GfxConstants.AGE_TEXT_X,
-                        GfxConstants.AGE_TEXT_Y) );
-        editor.drawing().add(tf);
-        editor.setTool( new ChangeAgeTool2(tf) );
-    }
-}
-
-class ChangeAgeTool2 extends NullTool {
-    private TextFigure textFigure;
-    public ChangeAgeTool2(TextFigure tf) {
-        textFigure = tf;
-    }
-    int count = 0;
-    public void mouseDown(MouseEvent e, int x, int y) {
-        count++;
-        textFigure.setText( ""+(4000-count*100)+" BC" );
+        editor.setTool( new CompositionTool(game,editor) );
     }
 }

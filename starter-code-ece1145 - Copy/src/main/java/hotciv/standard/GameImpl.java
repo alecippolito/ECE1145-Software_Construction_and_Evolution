@@ -40,7 +40,7 @@ public class GameImpl implements Game {
   private Player currentPlayerInTurn = Player.RED;
 
   int numPlayers = 2;
-  Player currentPlayer = null;
+  Player currentPlayer = Player.RED;
   int turnNumber = 0;
   int blueSize = 1;
   int redSize = 1;
@@ -107,7 +107,15 @@ public class GameImpl implements Game {
       updateObserversWorld(p);
   }
  
-  public City getCityAt( Position p ) { return worldLayout.returnCities().get(p);}
+  public City getCityAt( Position p ) {
+        if (worldLayout.returnCities().containsKey(p))
+        {
+            return worldLayout.returnCities().get(p);
+        }
+        else{
+            return null;
+        }
+    }
 
    public Player getCurrentPlayer(){
         return currentPlayer;
@@ -243,7 +251,7 @@ public int getCurrentAge(){
       /**
        * UPDATE OBSERVER
        */
-      updateObserversTurn(getCurrentPlayer(),getCurrentAge());
+      updateObserversTurn(getPlayerInTurn(),getAge());
   }
   public boolean endOfRound(){
     // this will only work if only 2 people are playing
@@ -496,7 +504,7 @@ public int getCurrentAge(){
         /**
          * UPDATE OBSERVER
          */
-        updateObserversWorld(position);
+        tileFocusedChangedAt(position);
     }
 
     /**
@@ -511,7 +519,7 @@ public int getCurrentAge(){
             observer.worldChangedAt(p);
         }
     }
-    public void updateObserversTileFocus(Position p){
+    public void tileFocusedChangedAt(Position p){
         /**
          * A CHANGE IN THE TILE THE PLAYER IS FOCUSING ON
          */
