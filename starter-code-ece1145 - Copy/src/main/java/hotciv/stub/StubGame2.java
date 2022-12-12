@@ -43,6 +43,8 @@ public class StubGame2 implements Game {
 
   private Unit red_archer;
 
+  private HashMap<Position,City> Cities;
+
   public Unit getUnitAt(Position p) {
     if ( p.equals(pos_archer_red) ) {
       return red_archer;
@@ -126,10 +128,25 @@ public class StubGame2 implements Game {
         world.put( p, new StubTile(GameConstants.PLAINS));
       }
     }
+    defineCityLocations();
+  }
+
+  /**
+   *
+   *  Define the Cities
+   */
+  protected void defineCityLocations(){
+    Cities = new HashMap<>();
+    Cities.put(new Position(5,5),new StubCity(Player.BLUE));
   }
 
   // TODO: Add more stub behaviour to test MiniDraw updating
-  public City getCityAt( Position p ) { return null; }
+  public City getCityAt( Position p ) {
+    if (Cities.containsKey(p)){
+      return Cities.get(p);
+    }
+    return null;
+  }
   public Player getWinner() { return null; }
   int age;
   public int getAge() { return age; }
@@ -151,9 +168,7 @@ public class StubGame2 implements Game {
   }
 
   public void setTileFocus(Position position) {
-    // TODO: setTileFocus implementation pending.
-    System.out.println("-- StubGame2 / setTileFocus called.");
-    System.out.println(" *** IMPLEMENTATION PENDING ***");
+    gameObserver.tileFocusChangedAt(position);
   }
 
 }
@@ -204,5 +219,32 @@ class StubUnit implements  Unit {
   @Override
   public void moved() {
 
+  }
+}
+
+
+class StubCity implements City{
+
+  Player owner;
+  public StubCity(Player player){
+    owner = player;
+  }
+  public void setOwner(Player p){
+    owner = p;
+  }
+  public Player getOwner(){
+    return owner;
+  }
+  public int getSize(){
+    return 5;
+  }
+  public int getTreasury(){
+    return 10;
+  }
+  public String getProduction(){
+    return GameConstants.LEGION;
+  }
+  public String getWorkforceFocus(){
+    return GameConstants.foodFocus;
   }
 }

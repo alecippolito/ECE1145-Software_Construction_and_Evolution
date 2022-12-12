@@ -37,10 +37,7 @@ public class ShowEndOfTurn {
       new MiniDrawApplication( "Click top shield to end the turn",  
                                new HotCivFactory4(game) );
     editor.open();
-    GameObserver observer = new GameObserverImpl(editor);
-    game.addObserver(observer);
 
-    // TODO: Replace the setting of the tool with your EndOfTurnTool implementation.
     editor.setTool( new EndOfTurnTool(game) );
   }
 }
