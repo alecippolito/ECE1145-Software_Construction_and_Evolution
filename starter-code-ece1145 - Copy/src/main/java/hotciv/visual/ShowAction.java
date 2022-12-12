@@ -41,11 +41,11 @@ public class ShowAction {
             new MiniDrawApplication("Shift-Click unit to invoke its action",
                     new HotCivFactory4(game));
     editor.open();
-    GameObserver observer = new GameObserverImpl(editor);
-    game.addObserver(observer);
+    //GameObserver observer = new GameObserverImpl(editor);
+    //game.addObserver(observer);
 
     // TODO: Replace the setting of the tool with your ActionTool implementation.
-    editor.setTool(new NullTool());
+    editor.setTool(new ActionTool(game,editor));
   }
 }
 

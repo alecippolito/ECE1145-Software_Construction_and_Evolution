@@ -93,5 +93,17 @@ class CompositionTool extends MoveTool{
       }
     }
 
+    //UNIT ACTION
+    Figure figure = model.findFigure(x, y);
+
+    if (figure != null && figure.getClass() ==
+            UnitFigure.class && this.game.getUnitAt(new Position((super.fAnchorY - 18) / 30, (super.fAnchorX - 13) / 30)) != null &&
+            this.game.getUnitAt(new Position((super.fAnchorY - 18) / 30, (super.fAnchorX - 13) / 30)).getOwner().equals(this.game.getPlayerInTurn()) &&
+            e.isShiftDown()) {
+
+      Position p = GfxConstants.getPositionFromXY(x, y);
+      this.game.performUnitActionAt(p);
+
+    }
   }
 }
