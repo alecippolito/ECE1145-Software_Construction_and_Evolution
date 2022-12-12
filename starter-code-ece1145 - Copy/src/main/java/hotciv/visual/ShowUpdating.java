@@ -41,7 +41,7 @@ public class ShowUpdating {
     // Try to set the selection tool instead to see
     // completely free movement of figures, including the icon
 
-    // editor.setTool( new SelectionTool(editor) );
+     //editor.setTool( new SelectionTool(editor) );
   }
 }
 

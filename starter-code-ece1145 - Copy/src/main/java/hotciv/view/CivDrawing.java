@@ -241,8 +241,7 @@ public class CivDrawing
     // this is a really brute-force algorithm: destroy
     // all known units and build up the entire set again
     defineUnitMap();
-
-    // TODO: Cities may change on position as well
+    defineCityMap();
   }
 
   public void turnEnds(Player nextPlayer, int age) {

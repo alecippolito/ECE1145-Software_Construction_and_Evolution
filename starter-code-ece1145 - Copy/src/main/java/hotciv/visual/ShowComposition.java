@@ -10,6 +10,7 @@ import javax.swing.*;
 import hotciv.framework.*;
 import hotciv.view.*;
 import hotciv.stub.*;
+import minidraw.standard.handlers.DragTracker;
 
 /** Template code for exercise FRS 36.44.
 
@@ -39,6 +40,58 @@ public class ShowComposition {
     editor.showStatus("Click and drag any item to see Game's proper response.");
 
     // TODO: Replace the setting of the tool with your CompositionTool implementation.
-    editor.setTool( new NullTool() );
+    editor.setTool( new CompositionTool(game,editor) );
+  }
+}
+
+class CompositionTool extends MoveTool{
+  private Game game;
+  protected Tool fChild;
+  protected Tool cachedNullTool;
+  protected Figure draggedFigure;
+
+  public CompositionTool(Game game, DrawingEditor editor) {
+    super(game,editor);
+    this.game = game;
+    this.fChild = this.cachedNullTool = new NullTool();
+    this.draggedFigure = null;
+  }
+  @Override
+  public void mouseDown(MouseEvent e, int x, int y) {
+    super.mouseDown(e, x, y);
+    Drawing model = this.editor().drawing();
+    model.lock();
+    this.draggedFigure = model.findFigure(x, y);
+
+    if (this.draggedFigure != null && this.draggedFigure.getClass() == UnitFigure.class &&
+            this.game.getUnitAt(new Position((super.fAnchorY - 18) / 30, (super.fAnchorX - 13) / 30)) != null &&
+            this.game.getUnitAt(new Position((super.fAnchorY - 18) / 30, (super.fAnchorX - 13) / 30)).getOwner().equals(this.game.getPlayerInTurn())) {
+      this.fChild = this.createDragTracker(this.draggedFigure);
+      this.fChild.mouseDown(e, x, y);
+    } else if (e.isShiftDown()) {
+      model.clearSelection();
+    } else {
+      this.draggedFigure = null;
+    }
+
+
+    //end of Turn
+    //if the inputs are at a specified point, the game reaches an end of turn
+    if (x >= GfxConstants.TURN_SHIELD_X && x <= GfxConstants.TURN_SHIELD_X+GfxConstants.TILESIZE && y >= GfxConstants.TURN_SHIELD_Y && y <= GfxConstants.TURN_SHIELD_Y+GfxConstants.TILESIZE){
+      game.endOfTurn();
+    }
+
+    //set Focus
+    //retrieve the Location based on the mouse click location
+    //only take action if the click is actually on the grid
+    if (x >= GfxConstants.MAP_OFFSET_X && x <= GfxConstants.MAP_OFFSET_X+(16*GfxConstants.TILESIZE)){
+      if (y >= GfxConstants.MAP_OFFSET_Y && y <= GfxConstants.MAP_OFFSET_Y+(16*GfxConstants.TILESIZE)){
+        Position p = GfxConstants.getPositionFromXY(x,y);
+
+        //run the setTileFocus function
+        game.setTileFocus(p);
+      }
+    }
+
   }
 }
